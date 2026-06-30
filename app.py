@@ -13,7 +13,21 @@ from recommendation_engine import (
 
 
 # ==========================
-# WEBSITE TITLE
+# PAGE CONFIGURATION
+# ==========================
+
+st.set_page_config(
+
+    page_title="VisionX Hardware Tool",
+
+    layout="wide"
+
+)
+
+
+
+# ==========================
+# VISIONX HEADER
 # ==========================
 
 st.title(
@@ -21,39 +35,23 @@ st.title(
 )
 
 
-
-# ==========================
-# CUSTOMER INPUT SECTION
-# ==========================
-
-st.header(
-    "Customer Inputs"
+st.write(
+    "AI Vision System Hardware Advisor - Version 1.0"
 )
 
 
 
-camera_count = st.number_input(
+# ==========================
+# CREATE TOP TABS
+# ==========================
 
-    "Number of Cameras",
-
-    min_value=1,
-
-    value=10
-
-)
-
-
-
-resolution = st.selectbox(
-
-    "Camera Resolution",
+customer_tab, database_tab = st.tabs(
 
     [
 
-        "1080p",
-        "2K",
-        "4K",
-        "8K"
+        "Customer Recommendation",
+
+        "Hardware Database Management"
 
     ]
 
@@ -61,245 +59,221 @@ resolution = st.selectbox(
 
 
 
-fps = st.selectbox(
-
-    "Frames Per Second (FPS)",
-
-    [
-
-        5,
-        15,
-        30,
-        60
-
-    ]
-
-)
+# =================================================
+# CUSTOMER RECOMMENDATION TAB
+# =================================================
 
 
-
-ai_model = st.selectbox(
-
-    "AI Model",
-
-    [
-
-        "YOLOv8",
-        "YOLOv10",
-        "Detectron2"
-
-    ]
-
-)
+with customer_tab:
 
 
-
-# ==========================
-# DISPLAY INPUT TABLE
-# ==========================
-
-
-st.subheader(
-    "Input Summary"
-)
-
-
-
-input_table = {
-
-
-"Parameter":
-
-[
-
-"Camera Count",
-"Resolution",
-"FPS",
-"AI Model"
-
-],
-
-
-
-"Value":
-
-[
-
-camera_count,
-resolution,
-fps,
-ai_model
-
-]
-
-
-}
-
-
-
-st.table(
-    input_table
-)
-
-
-
-# ==========================
-# HARDWARE RECOMMENDATION BUTTON
-# ==========================
-
-
-if st.button(
-    "Recommend Hardware"
-):
+    st.header(
+        "Customer Configuration"
+    )
 
 
     # ==========================
-    # CALCULATE WORKLOAD
+    # CUSTOMER INPUTS
     # ==========================
 
 
-    workload = calculate_workload(
+    camera_count = st.number_input(
 
-        camera_count,
+        "Number of Cameras",
 
-        fps,
+        min_value=1,
 
-        resolution,
+        value=10
 
-        ai_model
+    )
+
+
+
+    resolution = st.selectbox(
+
+        "Camera Resolution",
+
+        [
+
+            "1080p",
+            "2K",
+            "4K",
+            "8K"
+
+        ]
+
+    )
+
+
+
+    fps = st.selectbox(
+
+        "Frames Per Second",
+
+        [
+
+            5,
+            15,
+            30,
+            60
+
+        ]
+
+    )
+
+
+
+    ai_model = st.selectbox(
+
+        "AI Model",
+
+        [
+
+            "YOLOv8",
+            "YOLOv10",
+            "Detectron2"
+
+        ]
 
     )
 
 
 
     # ==========================
-    # FIND HARDWARE
+    # RECOMMEND BUTTON
     # ==========================
 
 
-    gpu = recommend_hardware(
+    if st.button(
 
-        workload
+        "Recommend Hardware"
 
-    )
-
-
-
-    # ==========================
-    # CHECK RESULT
-    # ==========================
+    ):
 
 
-    if gpu is None:
+        workload = calculate_workload(
 
+            camera_count,
 
-        st.error(
+            fps,
 
-            "No suitable hardware found"
+            resolution,
+
+            ai_model
 
         )
 
 
-        st.stop()
+
+        gpu = recommend_hardware(
+
+            workload
+
+        )
 
 
 
-    # ==========================
-    # OUTPUT TABLE
-    # ==========================
+        if gpu is None:
 
 
-    st.subheader(
+            st.error(
 
-        "Hardware Recommendation"
+                "No suitable hardware found"
+
+            )
+
+
+        else:
+
+
+            st.subheader(
+
+                "Recommended Hardware"
+
+            )
+
+
+            output_table = {
+
+
+            "Component":
+
+            [
+
+            "Workload Score",
+
+            "Hardware Type",
+
+            "Manufacturer",
+
+            "Model Name",
+
+            "VRAM",
+
+            "Power"
+
+            ],
+
+
+
+            "Value":
+
+            [
+
+            workload,
+
+            gpu["Hardware_Type"],
+
+            gpu["Manufacturer"],
+
+            gpu["Model_Name"],
+
+            gpu["VRAM_GB"],
+
+            gpu["Power_W"]
+
+            ]
+
+
+
+            }
+
+
+            st.table(
+
+                output_table
+
+            )
+
+
+
+
+
+# =================================================
+# HARDWARE DATABASE MANAGEMENT TAB
+# =================================================
+
+
+with database_tab:
+
+
+    st.header(
+
+        "Hardware Database Management"
+
+    )
+
+
+    st.write(
+
+        "Manage hardware reference database"
 
     )
 
 
 
-    output_table = {
-
-
-    "Component":
-
-    [
-
-    "Workload Score",
-
-    "Hardware Type",
-
-    "Manufacturer",
-
-    "Model Name",
-
-    "VRAM",
-
-    "Power"
-
-    ],
-
-
-
-    "Recommendation":
-
-    [
-
-    workload,
-
-    gpu["Hardware_Type"],
-
-    gpu["Manufacturer"],
-
-    gpu["Model_Name"],
-
-    gpu["VRAM_GB"],
-
-    gpu["Power_W"]
-
-    ]
-
-
-
-    }
-
-
-
-    st.table(
-
-        output_table
-
-    )
-
-
-
-
-
-# ==========================
-# HARDWARE DATABASE TABLE
-# ==========================
-
-
-st.divider()
-
-
-
-st.header(
-
-    "Hardware Reference Database"
-
-)
-
-
-
-if st.button(
-
-    "Show Hardware Table"
-
-):
-
-
     # ==========================
-    # LOAD CSV DATABASE
+    # LOAD DATABASE
     # ==========================
 
 
