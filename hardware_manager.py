@@ -91,14 +91,33 @@ def hardware_management():
 
 
 
+    # ==========================
+    # ADD ACTION COLUMN
+    # ==========================
+    
     table_df.insert(
-
+    
         0,
-
+    
+        "Action",
+    
+        "✏️"
+    
+    )
+    
+    
+    # ==========================
+    # ADD ROW NUMBER COLUMN
+    # ==========================
+    
+    table_df.insert(
+    
+        1,
+    
         "Row",
-
+    
         range(1, len(df)+1)
-
+    
     )
 
 
