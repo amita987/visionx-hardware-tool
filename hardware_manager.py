@@ -57,6 +57,11 @@ def hardware_management():
 
     df = load_database()
 
+    if "edit_row" not in st.session_state:
+
+        st.session_state.edit_row = None
+    
+
 
 
     # ==========================
@@ -92,7 +97,7 @@ def hardware_management():
 
 
     # ==========================
-    # ADD ACTION COLUMN
+    # CREATE ACTION COLUMN
     # ==========================
     
     table_df.insert(
@@ -101,7 +106,7 @@ def hardware_management():
     
         "Action",
     
-        "✏️"
+        range(len(df))
     
     )
     
@@ -122,15 +127,151 @@ def hardware_management():
 
 
 
-    st.dataframe(
-
-        table_df,
-
-        use_container_width=True,
-
-        hide_index=True
-
-    )
+    # ==========================
+    # DISPLAY TABLE WITH EDIT BUTTONS
+    # ==========================
+    
+    for index, row in df.iterrows():
+    
+    
+        cols = st.columns(len(table_df.columns))
+    
+    
+        # ==========================
+        # ACTION BUTTON
+        # ==========================
+    
+        with cols[0]:
+    
+    
+            if st.button(
+    
+                "✏️",
+    
+                key=f"edit_{index}"
+    
+            ):
+    
+                st.session_state.edit_row = index
+    
+    
+    
+        # ==========================
+        # DISPLAY DATA
+        # ==========================
+    
+        for i,column in enumerate(df.columns):
+    
+    
+            with cols[i+1]:
+    
+                st.write(
+                    row[column]
+                )
+    
+    
+    
+        # ==========================
+        # EDIT MODE
+        # ==========================
+    
+        if st.session_state.get("edit_row") == index:
+    
+    
+            st.info(
+                f"Editing {row['Model_Name']}"
+            )
+    
+    
+            edited_values = {}
+    
+    
+            edit_cols = st.columns(4)
+    
+    
+    
+            for i,column in enumerate(df.columns):
+    
+    
+                with edit_cols[i % 4]:
+    
+    
+                    edited_values[column] = st.text_input(
+    
+                        column,
+    
+                        value=str(row[column]),
+    
+                        key=f"{index}_{column}"
+    
+                    )
+    
+    
+    
+            update_col, cancel_col = st.columns(2)
+    
+    
+    
+            # ==========================
+            # UPDATE BUTTON
+            # ==========================
+    
+            with update_col:
+    
+    
+                if st.button(
+    
+                    "✅ Update",
+    
+                    key=f"update_{index}"
+    
+                ):
+    
+    
+                    for column in df.columns:
+    
+    
+                        df.loc[index,column] = edited_values[column]
+    
+    
+    
+                    save_database(df)
+    
+    
+                    st.session_state.edit_row = None
+    
+    
+                    st.success(
+    
+                        "Updated Successfully"
+    
+                    )
+    
+    
+                    st.rerun()
+    
+    
+    
+            # ==========================
+            # CANCEL BUTTON
+            # ==========================
+    
+            with cancel_col:
+    
+    
+                if st.button(
+    
+                    "❌ Cancel",
+    
+                    key=f"cancel_{index}"
+    
+                ):
+    
+    
+                    st.session_state.edit_row = None
+    
+    
+                    st.rerun()
 
 
 
