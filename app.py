@@ -788,103 +788,235 @@ st.dataframe(
 
 )
 # =================================================
-# CALCULATION LOGIC TAB
+# CALCULATION LOGIC TABLE
 # =================================================
 
 
-with calculation_tab:
+st.subheader(
 
+    "Backend Calculation Logic"
 
-    st.header(
-
-        "Backend Calculation Logic"
-
-    )
+)
 
 
 
-    calculation_table = [
+calculation_table = [
 
 
-        [
+    [
 
-            "Workload Score",
+        "Workload Score",
 
-            "Camera Count × FPS × Resolution Factor × AI Model Factor"
+        "Camera Count × FPS × Resolution Factor × AI Model Factor"
 
-        ],
-
-
-        [
-
-            "VRAM Required",
-
-            "Model Memory + Camera Memory + Safety Margin"
-
-        ],
+    ],
 
 
-        [
+    [
 
-            "CUDA Requirement",
+        "VRAM Required",
 
-            "Workload Score × Processing Factor"
+        "Model Memory + Camera Memory + Safety Margin"
 
-        ],
-
-
-        [
-
-            "Tensor Requirement",
-
-            "AI Model Complexity Factor"
-
-        ],
+    ],
 
 
-        [
+    [
 
-            "FP16 Requirement",
+        "CUDA Requirement",
 
-            "FPS × Camera Count × Model Factor"
+        "Workload Score × Processing Factor"
 
-        ],
+    ],
 
 
-        [
+    [
 
-            "INT8 Requirement",
+        "Tensor Requirement",
 
-            "Workload Score × Optimization Factor"
+        "AI Model Complexity Factor"
 
-        ]
+    ],
+
+
+    [
+
+        "FP16 Requirement",
+
+        "FPS × Camera Count × Model Factor"
+
+    ],
+
+
+    [
+
+        "INT8 Requirement",
+
+        "Workload Score × Optimization Factor"
 
     ]
 
-
-
-    calculation_df = pd.DataFrame(
-
-        calculation_table,
-
-        columns=[
-
-            "Calculation",
-
-            "Formula"
-
-        ]
-
-    )
+]
 
 
 
-    st.dataframe(
+calculation_df = pd.DataFrame(
 
-        calculation_df,
+    calculation_table,
 
-        use_container_width=True,
+    columns=[
 
-        hide_index=True
+        "Calculation",
 
-    )
+        "Formula"
+
+    ]
+
+)
+
+
+
+st.dataframe(
+
+    calculation_df,
+
+    use_container_width=True,
+
+    hide_index=True
+
+)
+
+# =================================================
+# HARDWARE SELECTION PROCESS TABLE
+# =================================================
+
+
+st.subheader(
+
+    "Hardware Selection Process"
+
+)
+
+
+
+selection_table = [
+
+
+    [
+
+        "1",
+
+        "Remove unavailable hardware"
+
+    ],
+
+
+    [
+
+        "2",
+
+        "Remove over-budget hardware"
+
+    ],
+
+
+    [
+
+        "3",
+
+        "Check workload range"
+
+    ],
+
+
+    [
+
+        "4",
+
+        "Check VRAM"
+
+    ],
+
+
+    [
+
+        "5",
+
+        "Check CUDA"
+
+    ],
+
+
+    [
+
+        "6",
+
+        "Check Tensor cores"
+
+    ],
+
+
+    [
+
+        "7",
+
+        "Check FP16"
+
+    ],
+
+
+    [
+
+        "8",
+
+        "Check INT8"
+
+    ],
+
+
+    [
+
+        "9",
+
+        "Rank remaining hardware"
+
+    ],
+
+
+    [
+
+        "10",
+
+        "Recommend best match"
+
+    ]
+
+]
+
+
+
+selection_df = pd.DataFrame(
+
+    selection_table,
+
+    columns=[
+
+        "Step",
+
+        "Check"
+
+    ]
+
+)
+
+
+
+st.dataframe(
+
+    selection_df,
+
+    use_container_width=True,
+
+    hide_index=True
+
+)
