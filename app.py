@@ -183,3 +183,41 @@ if st.button("Recommend Hardware"):
 
 
     st.table(output_table)
+
+# ==========================
+# TABLE DISPLAY BUTTON
+# ==========================
+
+if st.button("Show Hardware Table"):
+
+
+    # ==========================
+    # FUTURE HARDWARE TABLE
+    # ==========================
+
+
+    st.subheader(
+        "Hardware Reference Table"
+    )
+
+
+    hardware_table = {
+
+
+        "Column 1":
+        [
+            "Data will come here"
+        ],
+
+
+        "Column 2":
+        [
+            "Data will come here"
+        ]
+
+    }
+
+
+    st.table(
+        hardware_table
+    )
