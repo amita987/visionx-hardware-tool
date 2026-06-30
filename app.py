@@ -374,18 +374,3 @@ with database_tab:
 
 
     hardware_management()
-
-
-
-    # ==========================
-    # DISPLAY TABLE
-    # ==========================
-
-
-    st.dataframe(
-
-        hardware_data,
-
-        use_container_width=True
-
-    )
