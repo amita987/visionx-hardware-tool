@@ -274,209 +274,182 @@ def hardware_management():
 # COMPLETELY NEW BLOCK
     
     
-    
-    # ==========================
-    # EDIT INDIVIDUAL ROW
-    # ==========================
-    
-    
-    # create edit memory
-    
-    if "edit_selected_row" not in st.session_state:
-    
-        st.session_state.edit_selected_row = None
-    
-    
-    
-    # ==========================
-    # ROW NUMBER INPUT
-    # ==========================
-    
-    
-    edit_row_number = st.number_input(
-    
-        "Enter Row Number to Edit",
-    
-        min_value=1,
-    
-        max_value=len(df),
-    
-        value=1,
-    
-        step=1
-    
+ # =================================================
+# EDIT INDIVIDUAL ROW BLOCK (SEPARATE)
+# =================================================
+
+
+# --------------------------
+# CREATE MEMORY
+# --------------------------
+
+if "selected_edit_row" not in st.session_state:
+
+    st.session_state.selected_edit_row = None
+
+
+
+# --------------------------
+# CONNECT EXISTING EDIT BUTTON
+# --------------------------
+
+if "edit_row" in st.session_state:
+
+    if st.session_state.edit_row is not None:
+
+        st.session_state.selected_edit_row = st.session_state.edit_row
+
+
+
+
+# --------------------------
+# SHOW EDIT AREA
+# --------------------------
+
+if st.session_state.selected_edit_row is not None:
+
+
+    selected_row = st.session_state.selected_edit_row
+
+
+    row_data = df.loc[selected_row]
+
+
+
+    st.markdown(
+
+    """
+
+    <div style="
+
+    background-color:#E8F5E9;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    ">
+
+    <h3>
+
+    Editing Selected Hardware
+
+    </h3>
+
+    </div>
+
+    """,
+
+    unsafe_allow_html=True
+
     )
-    
-    
-    
-    # ==========================
-    # EDIT BUTTON
-    # ==========================
-    
-    
-    if st.button(
-    
-        "✏️ Edit Selected Row"
-    
-    ):
-    
-    
-        # convert display row number to dataframe index
-    
-        st.session_state.edit_selected_row = edit_row_number - 1
-    
-    
-    
-    
-    # ==========================
-    # EDIT MODE
-    # ==========================
-    
-    
-    if st.session_state.edit_selected_row is not None:
-    
-    
-        row_index = st.session_state.edit_selected_row
-    
-    
-        row_data = df.loc[row_index]
-    
-    
-    
-        st.markdown(
-    
-        """
-    
-        <div style="
-    
-        background-color:#E8F5E9;
-    
-        padding:15px;
-    
-        border-radius:10px;
-    
-        ">
-    
-        <h3>
-    
-        Editing Selected Hardware Row
-    
-        </h3>
-    
-        </div>
-    
-        """,
-    
-        unsafe_allow_html=True
-    
-        )
-    
-    
-    
-        # temporary storage
-    
-        edited_data = {}
-    
-    
-    
-        # horizontal fields
-    
-        edit_columns = st.columns(4)
-    
-    
-    
-        for i,column in enumerate(df.columns):
-    
-    
-            with edit_columns[i % 4]:
-    
-    
-                edited_data[column] = st.text_input(
-    
-                    column,
-    
-                    value=str(row_data[column]),
-    
-                    key=f"edit_row_{row_index}_{column}"
-    
-                )
-    
-    
-    
-    
-        st.write("")
-    
-    
-    
-        # ==========================
-        # UPDATE / CANCEL BUTTONS
-        # ==========================
-    
-    
-        update_button, cancel_button = st.columns(2)
-    
-    
-    
-    
-        # ==========================
-        # UPDATE
-        # ==========================
-    
-    
-        with update_button:
-    
-    
-            if st.button(
-    
-                "✅ Update Row"
-    
-            ):
-    
-    
-                for column in df.columns:
-    
-    
-                    df.loc[row_index,column] = edited_data[column]
-    
-    
-    
-                save_database(df)
-    
-    
-    
-                st.success(
-    
-                    "Row Updated Successfully"
-    
-                )
-    
-    
-    
-                st.session_state.edit_selected_row = None
-    
-    
-    
-                st.rerun()
-    
-    
-    
-    
-        # ==========================
-        # CANCEL
-        # ==========================
-    
-    
-        with cancel_button:
-    
-    
-            if st.button(
-    
-                "❌ Cancel Edit"
-    
-            ):
-    
-    
-                st.session_state.edit_selected_row = None
-    
-    
-                st.rerun()
+
+
+
+    edited_row = {}
+
+
+
+    # --------------------------
+    # HORIZONTAL FIELDS
+    # --------------------------
+
+    edit_columns = st.columns(4)
+
+
+
+    for i, column in enumerate(df.columns):
+
+
+        with edit_columns[i % 4]:
+
+
+            edited_row[column] = st.text_input(
+
+                column,
+
+                value=str(row_data[column]),
+
+                key=f"edit_box_{selected_row}_{column}"
+
+            )
+
+
+
+    st.write("")
+
+
+
+    # --------------------------
+    # UPDATE / CANCEL BUTTONS
+    # --------------------------
+
+    update_button, cancel_button = st.columns(2)
+
+
+
+
+    # UPDATE
+
+    with update_button:
+
+
+        if st.button(
+
+            "✅ Update",
+
+            key="update_selected_row"
+
+        ):
+
+
+            for column in df.columns:
+
+
+                df.loc[selected_row,column] = edited_row[column]
+
+
+
+            save_database(df)
+
+
+
+            st.success(
+
+                "Row Updated Successfully"
+
+            )
+
+
+            st.session_state.selected_edit_row = None
+
+
+            st.session_state.edit_row = None
+
+
+            st.rerun()
+
+
+
+
+    # CANCEL
+
+    with cancel_button:
+
+
+        if st.button(
+
+            "❌ Cancel",
+
+            key="cancel_selected_row"
+
+        ):
+
+
+            st.session_state.selected_edit_row = None
+
+
+            st.session_state.edit_row = None
+
+
+            st.rerun()
