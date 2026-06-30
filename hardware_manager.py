@@ -69,6 +69,8 @@ def hardware_management():
 
 
 
+
+
     # ==========================
     # FULL HARDWARE TABLE
     # ==========================
@@ -102,7 +104,7 @@ def hardware_management():
     
         if st.button(
     
-            "✏️ Edit"
+            "✏️ Edit Row"
     
         ):
     
@@ -141,10 +143,6 @@ def hardware_management():
 
     )
 
-    # COMPLETELY NEW BLOCK XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
-        
-
-    # COMPLETELY NEW BLOCK XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
 
     # ==========================
     # ADD HARDWARE BUTTON
