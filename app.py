@@ -664,597 +664,597 @@ with logic_tab:
         hide_index=True
 
     )
-# =================================================
-# CUSTOMER INPUT REFERENCE TABLE
-# =================================================
-
-
-st.subheader(
-
-    "Customer Input Requirements"
-
-)
-
-
-
-input_table = [
-
-
-    [
-
-        "Number of Cameras",
-
-        "20",
-
-        "VRAM, CUDA, workload"
-
-    ],
-
-
-    [
-
-        "Camera Resolution",
-
-        "4K",
-
-        "VRAM, workload"
-
-    ],
-
-
-    [
-
-        "FPS Requirement",
-
-        "30 FPS",
-
-        "CUDA, FP16, workload"
-
-    ],
-
-
-    [
-
-        "AI Model",
-
-        "YOLOv8",
-
-        "Tensor, compatibility"
-
-    ],
-
-
-    [
-
-        "Budget",
-
-        "$500",
-
-        "Price filtering"
-
-    ],
-
-
-    [
-
-        "Vendor Preference",
-
-        "NVIDIA",
-
-        "Manufacturer filtering"
-
-    ],
-
-
-    [
-
-        "Latency Requirement",
-
-        "Real-time",
-
-        "FP16/INT8 requirement"
-
+    # =================================================
+    # CUSTOMER INPUT REFERENCE TABLE
+    # =================================================
+    
+    
+    st.subheader(
+    
+        "Customer Input Requirements"
+    
+    )
+    
+    
+    
+    input_table = [
+    
+    
+        [
+    
+            "Number of Cameras",
+    
+            "20",
+    
+            "VRAM, CUDA, workload"
+    
+        ],
+    
+    
+        [
+    
+            "Camera Resolution",
+    
+            "4K",
+    
+            "VRAM, workload"
+    
+        ],
+    
+    
+        [
+    
+            "FPS Requirement",
+    
+            "30 FPS",
+    
+            "CUDA, FP16, workload"
+    
+        ],
+    
+    
+        [
+    
+            "AI Model",
+    
+            "YOLOv8",
+    
+            "Tensor, compatibility"
+    
+        ],
+    
+    
+        [
+    
+            "Budget",
+    
+            "$500",
+    
+            "Price filtering"
+    
+        ],
+    
+    
+        [
+    
+            "Vendor Preference",
+    
+            "NVIDIA",
+    
+            "Manufacturer filtering"
+    
+        ],
+    
+    
+        [
+    
+            "Latency Requirement",
+    
+            "Real-time",
+    
+            "FP16/INT8 requirement"
+    
+        ]
+    
     ]
-
-]
-
-
-
-input_df = pd.DataFrame(
-
-    input_table,
-
-    columns=[
-
-        "Input Field",
-
-        "Example",
-
-        "Used For"
-
+    
+    
+    
+    input_df = pd.DataFrame(
+    
+        input_table,
+    
+        columns=[
+    
+            "Input Field",
+    
+            "Example",
+    
+            "Used For"
+    
+        ]
+    
+    )
+    
+    
+    
+    st.dataframe(
+    
+        input_df,
+    
+        use_container_width=True,
+    
+        hide_index=True
+    
+    )
+    # =================================================
+    # CALCULATION LOGIC TABLE
+    # =================================================
+    
+    
+    st.subheader(
+    
+        "Backend Calculation Logic"
+    
+    )
+    
+    
+    
+    calculation_table = [
+    
+    
+        [
+    
+            "Workload Score",
+    
+            "Camera Count × FPS × Resolution Factor × AI Model Factor"
+    
+        ],
+    
+    
+        [
+    
+            "VRAM Required",
+    
+            "Model Memory + Camera Memory + Safety Margin"
+    
+        ],
+    
+    
+        [
+    
+            "CUDA Requirement",
+    
+            "Workload Score × Processing Factor"
+    
+        ],
+    
+    
+        [
+    
+            "Tensor Requirement",
+    
+            "AI Model Complexity Factor"
+    
+        ],
+    
+    
+        [
+    
+            "FP16 Requirement",
+    
+            "FPS × Camera Count × Model Factor"
+    
+        ],
+    
+    
+        [
+    
+            "INT8 Requirement",
+    
+            "Workload Score × Optimization Factor"
+    
+        ]
+    
     ]
-
-)
-
-
-
-st.dataframe(
-
-    input_df,
-
-    use_container_width=True,
-
-    hide_index=True
-
-)
-# =================================================
-# CALCULATION LOGIC TABLE
-# =================================================
-
-
-st.subheader(
-
-    "Backend Calculation Logic"
-
-)
-
-
-
-calculation_table = [
-
-
-    [
-
-        "Workload Score",
-
-        "Camera Count × FPS × Resolution Factor × AI Model Factor"
-
-    ],
-
-
-    [
-
-        "VRAM Required",
-
-        "Model Memory + Camera Memory + Safety Margin"
-
-    ],
-
-
-    [
-
-        "CUDA Requirement",
-
-        "Workload Score × Processing Factor"
-
-    ],
-
-
-    [
-
-        "Tensor Requirement",
-
-        "AI Model Complexity Factor"
-
-    ],
-
-
-    [
-
-        "FP16 Requirement",
-
-        "FPS × Camera Count × Model Factor"
-
-    ],
-
-
-    [
-
-        "INT8 Requirement",
-
-        "Workload Score × Optimization Factor"
-
+    
+    
+    
+    calculation_df = pd.DataFrame(
+    
+        calculation_table,
+    
+        columns=[
+    
+            "Calculation",
+    
+            "Formula"
+    
+        ]
+    
+    )
+    
+    
+    
+    st.dataframe(
+    
+        calculation_df,
+    
+        use_container_width=True,
+    
+        hide_index=True
+    
+    )
+    
+    # =================================================
+    # HARDWARE SELECTION PROCESS TABLE
+    # =================================================
+    
+    
+    st.subheader(
+    
+        "Hardware Selection Process"
+    
+    )
+    
+    
+    
+    selection_table = [
+    
+    
+        [
+    
+            "1",
+    
+            "Remove unavailable hardware"
+    
+        ],
+    
+    
+        [
+    
+            "2",
+    
+            "Remove over-budget hardware"
+    
+        ],
+    
+    
+        [
+    
+            "3",
+    
+            "Check workload range"
+    
+        ],
+    
+    
+        [
+    
+            "4",
+    
+            "Check VRAM"
+    
+        ],
+    
+    
+        [
+    
+            "5",
+    
+            "Check CUDA"
+    
+        ],
+    
+    
+        [
+    
+            "6",
+    
+            "Check Tensor cores"
+    
+        ],
+    
+    
+        [
+    
+            "7",
+    
+            "Check FP16"
+    
+        ],
+    
+    
+        [
+    
+            "8",
+    
+            "Check INT8"
+    
+        ],
+    
+    
+        [
+    
+            "9",
+    
+            "Rank remaining hardware"
+    
+        ],
+    
+    
+        [
+    
+            "10",
+    
+            "Recommend best match"
+    
+        ]
+    
     ]
-
-]
-
-
-
-calculation_df = pd.DataFrame(
-
-    calculation_table,
-
-    columns=[
-
-        "Calculation",
-
-        "Formula"
-
+    
+    
+    
+    selection_df = pd.DataFrame(
+    
+        selection_table,
+    
+        columns=[
+    
+            "Step",
+    
+            "Check"
+    
+        ]
+    
+    )
+    
+    
+    
+    st.dataframe(
+    
+        selection_df,
+    
+        use_container_width=True,
+    
+        hide_index=True
+    
+    )
+    # =================================================
+    # HARDWARE DATABASE COLUMN REFERENCE TABLE
+    # =================================================
+    
+    
+    st.subheader(
+    
+        "Hardware Database Column Reference"
+    
+    )
+    
+    
+    
+    hardware_column_table = [
+    
+    
+        [
+    
+            "Hardware Type",
+    
+            "GPU",
+    
+            "To identify the hardware category"
+    
+        ],
+    
+    
+        [
+    
+            "Manufacturer",
+    
+            "NVIDIA",
+    
+            "To identify vendor"
+    
+        ],
+    
+    
+        [
+    
+            "Model Name",
+    
+            "RTX 4060",
+    
+            "Final recommended hardware name"
+    
+        ],
+    
+    
+        [
+    
+            "VRAM (GB)",
+    
+            "8",
+    
+            "Determines how many AI models/streams can fit"
+    
+        ],
+    
+    
+        [
+    
+            "CUDA Cores",
+    
+            "3072",
+    
+            "Measures parallel processing capability"
+    
+        ],
+    
+    
+        [
+    
+            "Tensor Cores",
+    
+            "96",
+    
+            "AI acceleration capability"
+    
+        ],
+    
+    
+        [
+    
+            "FP16 Performance",
+    
+            "15 TFLOPS",
+    
+            "Deep learning inference speed"
+    
+        ],
+    
+    
+        [
+    
+            "INT8 Performance",
+    
+            "242 TOPS",
+    
+            "Optimized AI inference performance"
+    
+        ],
+    
+    
+        [
+    
+            "Power Consumption (W)",
+    
+            "115W",
+    
+            "Power supply and thermal planning"
+    
+        ],
+    
+    
+        [
+    
+            "Minimum Workload Score",
+    
+            "500",
+    
+            "Lowest workload this hardware should handle"
+    
+        ],
+    
+    
+        [
+    
+            "Maximum Workload Score",
+    
+            "1500",
+    
+            "Highest recommended workload"
+    
+        ],
+    
+    
+        [
+    
+            "Recommended Camera Count",
+    
+            "20",
+    
+            "Easy customer-facing estimate"
+    
+        ],
+    
+    
+        [
+    
+            "Max Resolution Support",
+    
+            "4K",
+    
+            "Highest camera resolution supported"
+    
+        ],
+    
+    
+        [
+    
+            "Max FPS Support",
+    
+            "30",
+    
+            "Maximum real-time frame rate"
+    
+        ],
+    
+    
+        [
+    
+            "AI Model Compatibility",
+    
+            "YOLOv8, YOLOv10",
+    
+            "Checks AI model suitability"
+    
+        ],
+    
+    
+        [
+    
+            "Price",
+    
+            "$299",
+    
+            "Budget calculation"
+    
+        ],
+    
+    
+        [
+    
+            "Availability",
+    
+            "Available",
+    
+            "Product availability tracking"
+    
+        ]
+    
     ]
-
-)
-
-
-
-st.dataframe(
-
-    calculation_df,
-
-    use_container_width=True,
-
-    hide_index=True
-
-)
-
-# =================================================
-# HARDWARE SELECTION PROCESS TABLE
-# =================================================
-
-
-st.subheader(
-
-    "Hardware Selection Process"
-
-)
-
-
-
-selection_table = [
-
-
-    [
-
-        "1",
-
-        "Remove unavailable hardware"
-
-    ],
-
-
-    [
-
-        "2",
-
-        "Remove over-budget hardware"
-
-    ],
-
-
-    [
-
-        "3",
-
-        "Check workload range"
-
-    ],
-
-
-    [
-
-        "4",
-
-        "Check VRAM"
-
-    ],
-
-
-    [
-
-        "5",
-
-        "Check CUDA"
-
-    ],
-
-
-    [
-
-        "6",
-
-        "Check Tensor cores"
-
-    ],
-
-
-    [
-
-        "7",
-
-        "Check FP16"
-
-    ],
-
-
-    [
-
-        "8",
-
-        "Check INT8"
-
-    ],
-
-
-    [
-
-        "9",
-
-        "Rank remaining hardware"
-
-    ],
-
-
-    [
-
-        "10",
-
-        "Recommend best match"
-
-    ]
-
-]
-
-
-
-selection_df = pd.DataFrame(
-
-    selection_table,
-
-    columns=[
-
-        "Step",
-
-        "Check"
-
-    ]
-
-)
-
-
-
-st.dataframe(
-
-    selection_df,
-
-    use_container_width=True,
-
-    hide_index=True
-
-)
-# =================================================
-# HARDWARE DATABASE COLUMN REFERENCE TABLE
-# =================================================
-
-
-st.subheader(
-
-    "Hardware Database Column Reference"
-
-)
-
-
-
-hardware_column_table = [
-
-
-    [
-
-        "Hardware Type",
-
-        "GPU",
-
-        "To identify the hardware category"
-
-    ],
-
-
-    [
-
-        "Manufacturer",
-
-        "NVIDIA",
-
-        "To identify vendor"
-
-    ],
-
-
-    [
-
-        "Model Name",
-
-        "RTX 4060",
-
-        "Final recommended hardware name"
-
-    ],
-
-
-    [
-
-        "VRAM (GB)",
-
-        "8",
-
-        "Determines how many AI models/streams can fit"
-
-    ],
-
-
-    [
-
-        "CUDA Cores",
-
-        "3072",
-
-        "Measures parallel processing capability"
-
-    ],
-
-
-    [
-
-        "Tensor Cores",
-
-        "96",
-
-        "AI acceleration capability"
-
-    ],
-
-
-    [
-
-        "FP16 Performance",
-
-        "15 TFLOPS",
-
-        "Deep learning inference speed"
-
-    ],
-
-
-    [
-
-        "INT8 Performance",
-
-        "242 TOPS",
-
-        "Optimized AI inference performance"
-
-    ],
-
-
-    [
-
-        "Power Consumption (W)",
-
-        "115W",
-
-        "Power supply and thermal planning"
-
-    ],
-
-
-    [
-
-        "Minimum Workload Score",
-
-        "500",
-
-        "Lowest workload this hardware should handle"
-
-    ],
-
-
-    [
-
-        "Maximum Workload Score",
-
-        "1500",
-
-        "Highest recommended workload"
-
-    ],
-
-
-    [
-
-        "Recommended Camera Count",
-
-        "20",
-
-        "Easy customer-facing estimate"
-
-    ],
-
-
-    [
-
-        "Max Resolution Support",
-
-        "4K",
-
-        "Highest camera resolution supported"
-
-    ],
-
-
-    [
-
-        "Max FPS Support",
-
-        "30",
-
-        "Maximum real-time frame rate"
-
-    ],
-
-
-    [
-
-        "AI Model Compatibility",
-
-        "YOLOv8, YOLOv10",
-
-        "Checks AI model suitability"
-
-    ],
-
-
-    [
-
-        "Price",
-
-        "$299",
-
-        "Budget calculation"
-
-    ],
-
-
-    [
-
-        "Availability",
-
-        "Available",
-
-        "Product availability tracking"
-
-    ]
-
-]
-
-
-
-hardware_column_df = pd.DataFrame(
-
-
-    hardware_column_table,
-
-
-    columns=[
-
-
-        "Column Name",
-
-        "Example",
-
-        "Why We Need It"
-
-
-    ]
-
-
-)
-
-
-
-st.dataframe(
-
-    hardware_column_df,
-
-    use_container_width=True,
-
-    hide_index=True
-
-)
+    
+    
+    
+    hardware_column_df = pd.DataFrame(
+    
+    
+        hardware_column_table,
+    
+    
+        columns=[
+    
+    
+            "Column Name",
+    
+            "Example",
+    
+            "Why We Need It"
+    
+    
+        ]
+    
+    
+    )
+    
+    
+    
+    st.dataframe(
+    
+        hardware_column_df,
+    
+        use_container_width=True,
+    
+        hide_index=True
+    
+    )
