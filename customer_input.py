@@ -14,125 +14,177 @@ import streamlit as st
 def get_customer_inputs():
 
 
-    st.header(
+    st.subheader(
 
-        "Customer Configuration"
-
-    )
-
-
-
-    # ==========================
-    # NUMBER OF CAMERAS
-    # ==========================
-
-
-    camera_count = st.number_input(
-
-        "Number of Cameras",
-
-        min_value=1,
-
-        value=10
+        "Customer System Configuration"
 
     )
 
 
 
     # ==========================
-    # CAMERA RESOLUTION
+    # ROW 1
     # ==========================
 
 
-    resolution = st.selectbox(
-
-        "Camera Resolution",
-
-        [
-
-            "1080p",
-
-            "2K",
-
-            "4K",
-
-            "8K"
-
-        ]
-
-    )
+    col1, col2 = st.columns(2)
 
 
 
-    # ==========================
-    # AI MODEL
-    # ==========================
+    with col1:
 
 
-    ai_model = st.selectbox(
+        camera_count = st.number_input(
 
-        "AI Model",
+            "📷 Number of Cameras",
 
-        [
+            min_value=1,
 
-            "YOLOv8",
+            value=10
 
-            "YOLOv10",
-
-            "Detectron"
-
-        ]
-
-    )
+        )
 
 
 
-    # ==========================
-    # FPS REQUIREMENT
-    # ==========================
+    with col2:
 
 
-    fps = st.selectbox(
+        resolution = st.selectbox(
 
-        "FPS Requirement",
+            "🎥 Camera Resolution",
 
-        [
+            [
 
-            15,
+                "1080p",
 
-            30,
+                "2K",
 
-            60
+                "4K",
 
-        ]
+                "8K"
 
-    )
+            ]
+
+        )
+
+
+
+    st.divider()
 
 
 
     # ==========================
-    # LATENCY REQUIREMENT
+    # ROW 2
     # ==========================
 
 
-    latency = st.selectbox(
+    col3, col4 = st.columns(2)
 
-        "Latency Requirement",
 
-        [
 
-            "Real-time",
+    with col3:
 
-            "Normal"
 
-        ]
+        ai_model = st.selectbox(
 
-    )
+            "🤖 AI Model",
+
+            [
+
+                "YOLOv8",
+
+                "YOLOv10",
+
+                "Detectron"
+
+            ]
+
+        )
+
+
+
+    with col4:
+
+
+        fps = st.selectbox(
+
+            "⚡ FPS Requirement",
+
+            [
+
+                15,
+
+                30,
+
+                60
+
+            ]
+
+        )
+
+
+
+    st.divider()
 
 
 
     # ==========================
-    # RETURN CUSTOMER INPUTS
+    # ROW 3
+    # ==========================
+
+
+    col5, col6 = st.columns(2)
+
+
+
+    with col5:
+
+
+        latency = st.selectbox(
+
+            "⏱ Latency Requirement",
+
+            [
+
+                "Real-time",
+
+                "Normal"
+
+            ]
+
+        )
+
+
+
+    with col6:
+
+
+        st.info(
+
+            """
+
+            System will calculate:
+
+            • Workload Score
+
+            • VRAM Requirement
+
+            • CUDA Requirement
+
+            • AI Processing Need
+
+            """
+
+        )
+
+
+
+    st.divider()
+
+
+
+    # ==========================
+    # RETURN VALUES
     # ==========================
 
 
