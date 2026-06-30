@@ -49,8 +49,6 @@ def save_database(df):
 
 def hardware_management():
 
-    st.success("NEW HARDWARE MANAGER LOADED")
-
     st.subheader(
         "Hardware Database Management"
     )
