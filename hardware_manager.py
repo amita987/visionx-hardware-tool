@@ -43,294 +43,287 @@ def save_database(df):
 
 
 
-
-
-
 # ==========================
-# HARDWARE TABLE + INLINE EDIT
+# HARDWARE MANAGEMENT PAGE
 # ==========================
 
 def hardware_management():
 
-    st.subheader("Hardware Database Management")
+
+    st.subheader(
+        "Hardware Database Management"
+    )
+
 
     df = load_database()
 
+
+
     # ==========================
-    # INIT SESSION STATE
+    # SESSION STATE
     # ==========================
 
     if "edit_row" not in st.session_state:
+
         st.session_state.edit_row = None
 
 
-    
-    # ==========================
-    # HARDWARE TABLE WITH HEADERS
-    # ==========================
-    
-    st.write("Hardware Inventory")
-    
-    
+
+    if "add_hardware" not in st.session_state:
+
+        st.session_state.add_hardware = False
+
+
+
     # ==========================
     # TABLE HEADER
     # ==========================
-    
-    header = st.columns(
-        [0.5,1,2,2,2,1,1,1,1]
+
+    st.write(
+        "Hardware Inventory"
     )
-    
-    
-    headers = [
-    
+
+
+    header = st.columns(
+        [0.5,0.8,1.5,1.5,1.8,0.8,1,1,1]
+    )
+
+
+    headings = [
+
         "Row",
         "Action",
         "Hardware Type",
         "Manufacturer",
         "Model Name",
         "VRAM",
-        "CUDA Cores",
-        "Tensor Cores",
+        "CUDA",
+        "Tensor",
         "FP16"
-    
+
     ]
-    
-    
-    for col, text in zip(header, headers):
-    
+
+
+    for col, title in zip(header, headings):
+
         with col:
+
             st.markdown(
-                f"**{text}**"
+                f"**{title}**"
             )
-    
-    
-    
+
+
+
     st.divider()
-    
-    
-    
+
+
+
     # ==========================
     # TABLE ROWS
     # ==========================
-    
+
     for index, row in df.iterrows():
-    
-    
+
+
         cols = st.columns(
-            [0.5,1,2,2,2,1,1,1,1]
+            [0.5,0.8,1.5,1.5,1.8,0.8,1,1,1]
         )
-    
-    
+
+
         with cols[0]:
+
             st.write(index + 1)
-    
-    
-    
+
+
+
+        # EDIT BUTTON
+
         with cols[1]:
-    
+
+
             if st.button(
+
                 "✏️",
+
                 key=f"edit_{index}"
+
             ):
-    
+
                 st.session_state.edit_row = index
-    
-    
-    
+
+
+
         with cols[2]:
-            st.write(row["Hardware_Type"])
-    
-    
+
+            st.write(
+                row["Hardware_Type"]
+            )
+
+
         with cols[3]:
-            st.write(row["Manufacturer"])
-    
-    
+
+            st.write(
+                row["Manufacturer"]
+            )
+
+
         with cols[4]:
-            st.write(row["Model_Name"])
-    
-    
+
+            st.write(
+                row["Model_Name"]
+            )
+
+
         with cols[5]:
-            st.write(row["VRAM_GB"])
-    
-    
+
+            st.write(
+                row["VRAM_GB"]
+            )
+
+
         with cols[6]:
-            st.write(row["CUDA_Cores"])
-    
-    
+
+            st.write(
+                row["CUDA_Cores"]
+            )
+
+
         with cols[7]:
-            st.write(row["Tensor_Cores"])
-    
-    
+
+            st.write(
+                row["Tensor_Cores"]
+            )
+
+
         with cols[8]:
-            st.write(row["FP16_TFLOPS"])
-    
-    
-    
-        st.divider()
 
-
-    # ==========================
-    # EDIT PANEL
-    # ==========================
-
-
-    if st.session_state.get(
-
-        "edit_row",
-
-        None
-
-    ) is not None:
-
-
-
-        index = st.session_state.edit_row
-
-
-        row = df.loc[index]
+            st.write(
+                row["FP16_TFLOPS"]
+            )
 
 
 
         # ==========================
-        # GREEN EDIT AREA
+        # EDIT ONLY SELECTED ROW
         # ==========================
 
 
-        st.markdown(
+        if st.session_state.edit_row == index:
 
-        """
 
-        <div style="
+            st.markdown(
+
+            """
+
+            <div style="
             background-color:#E8F5E9;
             padding:15px;
             border-radius:10px;
-            margin-top:10px;
-        ">
-            <h3 style="margin:0;">
-                Editing Hardware Record
+            ">
+
+            <h3>
+            Editing Hardware
             </h3>
-        </div>
-        """,
 
-        unsafe_allow_html=True
+            </div>
 
-        )
+            """,
 
+            unsafe_allow_html=True
 
+            )
 
-        updated_values = {}
 
+            edited = {}
 
 
-        # ==========================
-        # HORIZONTAL INPUT FIELDS
-        # ==========================
+            edit_cols = st.columns(4)
 
 
-        cols = st.columns(4)
 
+            for i,column in enumerate(df.columns):
 
 
-        for i,column in enumerate(df.columns):
+                with edit_cols[i % 4]:
 
 
-            with cols[i % 4]:
+                    edited[column] = st.text_input(
 
+                        column,
 
-                updated_values[column] = st.text_input(
+                        value=str(row[column]),
 
-                    column,
+                        key=f"edit_{index}_{column}"
 
-                    value=str(row[column]),
+                    )
 
-                    key=f"edit_{column}_{index}"
 
-                )
 
+            save_col, cancel_col = st.columns(2)
 
 
-        st.write("")
 
+            with save_col:
 
 
-        # ==========================
-        # UPDATE / CANCEL BUTTONS
-        # ==========================
+                if st.button(
 
+                    "✅ Update",
 
-        update_col, cancel_col = st.columns(
+                    key=f"save_{index}"
 
-            [1,1]
+                ):
 
-        )
 
+                    for column in df.columns:
 
 
-        with update_col:
+                        df.loc[index,column] = edited[column]
 
 
-            if st.button(
 
-                "✅ Update",
+                    save_database(df)
 
-                key=f"update_{index}"
 
-            ):
+                    st.success(
+                        "Updated Successfully"
+                    )
 
 
+                    st.session_state.edit_row = None
 
-                for column in df.columns:
 
+                    st.rerun()
 
-                    df.loc[index,column] = updated_values[column]
 
 
+            with cancel_col:
 
-                save_database(df)
 
+                if st.button(
 
+                    "❌ Cancel",
 
-                st.success(
+                    key=f"cancel_{index}"
 
-                    "Hardware Updated Successfully"
+                ):
 
-                )
 
+                    st.session_state.edit_row = None
 
 
-                st.session_state.edit_row = None
+                    st.rerun()
 
 
-                st.rerun()
 
+        st.divider()
 
-
-        with cancel_col:
-
-
-            if st.button(
-
-                "❌ Cancel",
-
-                key=f"cancel_{index}"
-
-            ):
-
-
-                st.session_state.edit_row = None
-
-
-                st.rerun()
 
 
 
     # ==========================
-    # ADD HARDWARE BUTTON
+    # ADD HARDWARE
     # ==========================
-
-
-    st.divider()
-
 
 
     if st.button(
@@ -339,30 +332,16 @@ def hardware_management():
 
     ):
 
-
         st.session_state.add_hardware = True
 
 
 
 
-    # ==========================
-    # ADD HARDWARE FORM
-    # ==========================
-
-
-    if st.session_state.get(
-
-        "add_hardware",
-
-        False
-
-    ):
+    if st.session_state.add_hardware:
 
 
         st.subheader(
-
             "Add New Hardware"
-
         )
 
 
@@ -390,43 +369,24 @@ def hardware_management():
 
 
 
-        st.write("")
+        add_col, cancel_col = st.columns(2)
 
 
 
-        save_col, cancel_col = st.columns(
-
-            [1,1]
-
-        )
-
-
-
-        with save_col:
+        with add_col:
 
 
             if st.button(
 
-                "💾 Update Hardware Database"
+                "💾 Save Hardware"
 
             ):
-
 
 
                 df.loc[len(df)] = new_row
 
 
-
                 save_database(df)
-
-
-
-                st.success(
-
-                    "New Hardware Added"
-
-                )
-
 
 
                 st.session_state.add_hardware = False
