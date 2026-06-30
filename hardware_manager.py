@@ -198,9 +198,13 @@ def hardware_management():
             for i, column in enumerate(df.columns):
                 with cols[i % 4]:
                     updated_values[column] = st.text_input(
+                    
                         column,
+                    
                         value=str(row[column]),
-                        key=f"edit_{column}_{index}"
+                    
+                        key=f"edit_{index}_{column}"
+                    
                     )
     
             btn1, btn2 = st.columns(2)
