@@ -104,45 +104,6 @@ def hardware_management():
     # ==========================
 
 
-    st.write("")
-
-
-    edit_col1, edit_col2 = st.columns(
-
-        [2,8]
-
-    )
-
-
-
-    with edit_col1:
-
-
-        edit_index = st.selectbox(
-
-            "Select Row",
-
-            options=range(len(df)),
-
-            format_func=lambda x:
-            df.loc[x,"Model_Name"]
-
-        )
-
-
-
-    with edit_col2:
-
-
-        if st.button(
-
-            "✏️ Edit"
-
-        ):
-
-
-            st.session_state.edit_row = edit_index
-
 
 
 
