@@ -111,34 +111,34 @@ def hardware_management():
 
     )
 
-    # ==========================
-    # EDIT ROW BUTTON
-    # ==========================
-    
-    
-    st.divider()
-    
-    
-    edit_row_number = st.number_input(
-    
-        "Edit Row Number",
-    
-        min_value=1,
-    
-        max_value=len(df),
-    
-        value=1
-    
-    )
-    
-    
-    if st.button(
-    
-        "✏️ Edit Row"
-    
-    ):
-    
-        st.session_state.edit_row = edit_row_number - 1
+   # ==========================
+# EDIT ROW BUTTON
+# ==========================
+
+
+st.divider()
+
+
+edit_row_number = st.number_input(
+
+    "Edit Row Number",
+
+    min_value=1,
+
+    max_value=len(df),
+
+    value=1
+
+)
+
+
+if st.button(
+
+    "✏️ Edit Row"
+
+):
+
+    st.session_state.edit_row = edit_row_number - 1
 
     # ==========================
     # ADD HARDWARE BUTTON
