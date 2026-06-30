@@ -664,3 +664,126 @@ with logic_tab:
         hide_index=True
 
     )
+# =================================================
+# CUSTOMER INPUT REFERENCE TABLE
+# =================================================
+
+
+st.subheader(
+
+    "Customer Input Requirements"
+
+)
+
+
+
+input_table = [
+
+
+    [
+
+        "Number of Cameras",
+
+        "20",
+
+        "VRAM, CUDA, workload"
+
+    ],
+
+
+    [
+
+        "Camera Resolution",
+
+        "4K",
+
+        "VRAM, workload"
+
+    ],
+
+
+    [
+
+        "FPS Requirement",
+
+        "30 FPS",
+
+        "CUDA, FP16, workload"
+
+    ],
+
+
+    [
+
+        "AI Model",
+
+        "YOLOv8",
+
+        "Tensor, compatibility"
+
+    ],
+
+
+    [
+
+        "Budget",
+
+        "$500",
+
+        "Price filtering"
+
+    ],
+
+
+    [
+
+        "Vendor Preference",
+
+        "NVIDIA",
+
+        "Manufacturer filtering"
+
+    ],
+
+
+    [
+
+        "Latency Requirement",
+
+        "Real-time",
+
+        "FP16/INT8 requirement"
+
+    ]
+
+]
+
+
+
+input_df = pd.DataFrame(
+
+    input_table,
+
+    columns=[
+
+        "Input Field",
+
+        "Example",
+
+        "Used For"
+
+    ]
+
+)
+
+
+
+st.dataframe(
+
+    input_df,
+
+    use_container_width=True,
+
+    hide_index=True
+
+)
