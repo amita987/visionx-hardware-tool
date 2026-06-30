@@ -366,22 +366,13 @@ with customer_tab:
 # HARDWARE DATABASE MANAGEMENT TAB
 # =================================================
 
-
 with database_tab:
 
 
-    st.header(
-
-        "Hardware Database Management"
-
-    )
+    from hardware_manager import hardware_management
 
 
-    st.write(
-
-        "Current hardware reference database"
-
-    )
+    hardware_management()
 
 
 
