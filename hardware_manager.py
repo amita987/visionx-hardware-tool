@@ -99,13 +99,113 @@ def hardware_management():
 
 
 
+# ==========================
+# HARDWARE TABLE + INLINE EDIT
+# ==========================
+
+def hardware_management():
+
+    st.subheader("Hardware Database Management")
+
+    df = load_database()
+
     # ==========================
-    # EDIT SELECTION AREA
+    # INIT SESSION STATE
     # ==========================
 
+    if "edit_row" not in st.session_state:
+        st.session_state.edit_row = None
 
+    # ==========================
+    # DISPLAY TABLE WITH EDIT ICONS
+    # ==========================
 
+    st.write("Hardware Inventory")
 
+    for index, row in df.iterrows():
+
+        col1, col2, col3, col4, col5 = st.columns([0.5, 1, 1, 1, 1])
+
+        # ==========================
+        # EDIT BUTTON (PENCIL)
+        # ==========================
+        with col1:
+            if st.button("✏️", key=f"edit_{index}"):
+                st.session_state.edit_row = index
+
+        # ==========================
+        # NORMAL ROW VIEW
+        # ==========================
+        with col2:
+            st.write(row["Hardware_Type"])
+
+        with col3:
+            st.write(row["Manufacturer"])
+
+        with col4:
+            st.write(row["Model_Name"])
+
+        with col5:
+            st.write(row["VRAM_GB"])
+
+        # ==========================
+        # EDIT MODE FOR SELECTED ROW
+        # ==========================
+        if st.session_state.edit_row == index:
+
+            st.markdown(
+                """
+                <div style="
+                    background-color:#E8F5E9;
+                    padding:15px;
+                    border-radius:10px;
+                    margin-top:10px;
+                ">
+                <h4>Editing Selected Hardware</h4>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+            updated_values = {}
+
+            cols = st.columns(4)
+
+            for i, column in enumerate(df.columns):
+                with cols[i % 4]:
+                    updated_values[column] = st.text_input(
+                        column,
+                        value=str(row[column]),
+                        key=f"edit_{column}_{index}"
+                    )
+
+            # ==========================
+            # ACTION BUTTONS
+            # ==========================
+            btn1, btn2 = st.columns(2)
+
+            with btn1:
+                if st.button("✅ Update", key=f"update_{index}"):
+
+                    for column in df.columns:
+                        df.loc[index, column] = updated_values[column]
+
+                    save_database(df)
+
+                    st.success("Row Updated Successfully")
+
+                    st.session_state.edit_row = None
+
+                    st.rerun()
+
+            with btn2:
+                if st.button("❌ Cancel", key=f"cancel_{index}"):
+
+                    st.session_state.edit_row = None
+
+                    st.rerun()
+
+        st.divider()
 
 
     # ==========================
