@@ -60,35 +60,36 @@ def hardware_management():
 
 
     # ==========================
-    # SESSION SETTINGS
-    # ==========================
-
-    if "edit_row" not in st.session_state:
-
-        st.session_state.edit_row = None
-
-
-
-    if "add_hardware" not in st.session_state:
-
-        st.session_state.add_hardware = False
-
-
-
-    # ==========================
     # HARDWARE TABLE DISPLAY
     # ==========================
 
 
     st.write(
-        "Current Hardware Database"
+        "Hardware Inventory"
     )
 
+
+    # --------------------------
+    # ACTION COLUMN
+    # --------------------------
+
+    display_df = df.copy()
+
+
+    display_df.insert(
+
+        0,
+
+        "Action",
+
+        "✏️"
+
+    )
 
 
     st.dataframe(
 
-        df,
+        display_df,
 
         use_container_width=True,
 
@@ -99,52 +100,66 @@ def hardware_management():
 
 
     # ==========================
-    # SELECT HARDWARE TO EDIT
+    # EDIT SELECTION AREA
     # ==========================
 
 
-    st.divider()
+    st.write("")
 
 
+    edit_col1, edit_col2 = st.columns(
 
-    st.subheader(
-        "Edit Hardware"
-    )
-
-
-
-    edit_index = st.selectbox(
-
-        "Select Hardware",
-
-        options=range(len(df)),
-
-        format_func=lambda x:
-        df.loc[x,"Model_Name"]
+        [2, 8]
 
     )
 
 
 
-    if st.button(
-
-        "✏️ Edit"
-
-    ):
+    with edit_col1:
 
 
-        st.session_state.edit_row = edit_index
+        edit_index = st.selectbox(
+
+            "Select Row",
+
+            options=range(len(df)),
+
+            format_func=lambda x:
+            df.loc[x, "Model_Name"]
+
+        )
+
+
+
+    with edit_col2:
+
+
+        if st.button(
+
+            "✏️ Edit"
+
+        ):
+
+
+            st.session_state.edit_row = edit_index
 
 
 
 
 
     # ==========================
-    # EDIT SECTION
+    # EDIT PANEL
     # ==========================
 
 
-    if st.session_state.edit_row is not None:
+    if st.session_state.get(
+
+        "edit_row",
+
+        None
+
+    ) is not None:
+
 
 
         index = st.session_state.edit_row
@@ -155,7 +170,7 @@ def hardware_management():
 
 
         # ==========================
-        # GREEN BACKGROUND
+        # GREEN EDIT AREA
         # ==========================
 
 
@@ -165,17 +180,19 @@ def hardware_management():
 
         <div style="
 
-        background-color:#E8F5E9;
+        background-color:#E6F4EA;
 
-        padding:20px;
+        padding:15px;
 
-        border-radius:10px;
+        border-radius:8px;
+
+        margin-top:10px;
 
         ">
 
-        <h3>
+        <h4>
         Editing Hardware Record
-        </h3>
+        </h4>
 
         </div>
 
@@ -200,7 +217,7 @@ def hardware_management():
 
 
 
-        for i,column in enumerate(df.columns):
+        for i, column in enumerate(df.columns):
 
 
             with cols[i % 4]:
@@ -227,7 +244,11 @@ def hardware_management():
         # ==========================
 
 
-        update_col, cancel_col = st.columns(2)
+        update_col, cancel_col = st.columns(
+
+            [1, 1]
+
+        )
 
 
 
@@ -238,15 +259,16 @@ def hardware_management():
 
                 "✅ Update",
 
-                key="update_button"
+                key=f"update_{index}"
 
             ):
+
 
 
                 for column in df.columns:
 
 
-                    df.loc[index,column] = updated_values[column]
+                    df.loc[index, column] = updated_values[column]
 
 
 
@@ -259,6 +281,7 @@ def hardware_management():
                     "Hardware Updated Successfully"
 
                 )
+
 
 
                 st.session_state.edit_row = None
@@ -275,135 +298,4 @@ def hardware_management():
 
                 "❌ Cancel",
 
-                key="cancel_button"
-
-            ):
-
-
-                st.session_state.edit_row = None
-
-
-                st.rerun()
-
-
-
-
-
-    # ==========================
-    # ADD NEW HARDWARE BUTTON
-    # ==========================
-
-
-    st.divider()
-
-
-
-    if st.button(
-
-        "➕ Add New Hardware"
-
-    ):
-
-
-        st.session_state.add_hardware = True
-
-
-
-
-
-    # ==========================
-    # ADD HARDWARE FORM
-    # ==========================
-
-
-    if st.session_state.add_hardware:
-
-
-        st.subheader(
-
-            "Add New Hardware"
-
-        )
-
-
-
-        new_row = {}
-
-
-
-        cols = st.columns(4)
-
-
-
-        for i,column in enumerate(df.columns):
-
-
-            with cols[i % 4]:
-
-
-                new_row[column] = st.text_input(
-
-                    column,
-
-                    key=f"new_{column}"
-
-                )
-
-
-
-        st.write("")
-
-
-
-        save_col, cancel_col = st.columns(2)
-
-
-
-        with save_col:
-
-
-            if st.button(
-
-                "💾 Update Hardware Database"
-
-            ):
-
-
-
-                df.loc[len(df)] = new_row
-
-
-
-                save_database(df)
-
-
-
-                st.success(
-
-                    "New Hardware Added"
-
-                )
-
-
-
-                st.session_state.add_hardware = False
-
-
-                st.rerun()
-
-
-
-        with cancel_col:
-
-
-            if st.button(
-
-                "❌ Cancel Add"
-
-            ):
-
-
-                st.session_state.add_hardware = False
-
-
-                st.rerun()
+                key=f"
