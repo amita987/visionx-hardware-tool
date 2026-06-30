@@ -5,6 +5,8 @@
 import streamlit as st
 import pandas as pd
 
+from customer_input import get_customer_inputs
+
 from recommendation_engine import (
     calculate_workload,
     recommend_hardware
@@ -133,87 +135,12 @@ customer_tab, database_tab, logic_tab = st.tabs(
 with customer_tab:
 
 
-    st.header(
-        "Customer Configuration"
-    )
-
-
     # ==========================
-    # INPUT SECTION
+    # CUSTOMER INPUTS
     # ==========================
-
-
-    col1, col2 = st.columns(2)
-
-
-
-    with col1:
-
-
-        camera_count = st.number_input(
-
-            "Number of Cameras",
-
-            min_value=1,
-
-            value=10
-
-        )
-
-
-        resolution = st.selectbox(
-
-            "Camera Resolution",
-
-            [
-
-                "1080p",
-                "2K",
-                "4K",
-                "8K"
-
-            ]
-
-        )
-
-
-
-    with col2:
-
-
-        fps = st.selectbox(
-
-            "Frames Per Second",
-
-            [
-
-                5,
-                15,
-                30,
-                60
-
-            ]
-
-        )
-
-
-        ai_model = st.selectbox(
-
-            "AI Model",
-
-            [
-
-                "YOLOv8",
-                "YOLOv10",
-                "Detectron2"
-
-            ]
-
-        )
-
-
-
-    st.divider()
+    
+    
+    customer_data = get_customer_inputs()
 
 
 
