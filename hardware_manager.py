@@ -51,9 +51,7 @@ def hardware_management():
 
 
     st.subheader(
-
         "Hardware Database Management"
-
     )
 
 
@@ -65,16 +63,12 @@ def hardware_management():
     # ADD NEW HARDWARE
     # ==========================
 
-
     if st.button(
-
         "Add New Hardware"
-
     ):
 
 
         st.session_state.add_hardware = True
-
 
 
 
@@ -88,9 +82,7 @@ def hardware_management():
 
 
         st.subheader(
-
             "Add Hardware"
-
         )
 
 
@@ -105,39 +97,60 @@ def hardware_management():
 
                 column,
 
-                key="add_"+column
+                key="add_" + column
 
             )
 
 
 
-        if st.button(
-
-            "Update Hardware Database"
-
-        ):
+        col1,col2 = st.columns(2)
 
 
 
-            df.loc[len(df)] = new_row
+        with col1:
 
 
-            save_database(df)
+            if st.button(
+
+                "Update Hardware Database"
+
+            ):
 
 
-            st.success(
-
-                "New Hardware Added"
-
-            )
+                df.loc[len(df)] = new_row
 
 
-            st.session_state.add_hardware = False
+                save_database(df)
 
 
-            st.rerun()
+                st.success(
+
+                    "New Hardware Added"
+
+                )
 
 
+                st.session_state.add_hardware = False
+
+
+                st.rerun()
+
+
+
+        with col2:
+
+
+            if st.button(
+
+                "Cancel Add"
+
+            ):
+
+
+                st.session_state.add_hardware = False
+
+
+                st.rerun()
 
 
 
@@ -146,7 +159,7 @@ def hardware_management():
 
 
     # ==========================
-    # EDIT EXISTING ROWS
+    # EDIT EXISTING HARDWARE
     # ==========================
 
 
@@ -186,7 +199,6 @@ def hardware_management():
 
 
 
-
         with col2:
 
 
@@ -219,45 +231,72 @@ def hardware_management():
 
                         value=str(row[column]),
 
-                        key=f"{column}_{index}"
+                        key=f"edit_{column}_{index}"
 
                     )
 
 
 
-                if st.button(
-
-                    "Update Row",
-
-                    key=f"update_{index}"
-
-                ):
+                update_col,cancel_col = st.columns(2)
 
 
 
-                    for column in df.columns:
+                with update_col:
 
 
-                        df.loc[index,column] = updated_row[column]
+                    if st.button(
 
+                        "Update Row",
 
+                        key=f"update_{index}"
 
-                    save_database(df)
-
-
-
-                    st.success(
-
-                        "Row Updated Successfully"
-
-                    )
+                    ):
 
 
 
-                    st.session_state.edit_row = None
+                        for column in df.columns:
 
 
-                    st.rerun()
+                            df.loc[index,column] = updated_row[column]
+
+
+
+                        save_database(df)
+
+
+
+                        st.success(
+
+                            "Row Updated Successfully"
+
+                        )
+
+
+
+                        st.session_state.edit_row = None
+
+
+                        st.rerun()
+
+
+
+                with cancel_col:
+
+
+                    if st.button(
+
+                        "Cancel Edit",
+
+                        key=f"cancel_{index}"
+
+                    ):
+
+
+
+                        st.session_state.edit_row = None
+
+
+                        st.rerun()
 
 
 
