@@ -117,122 +117,122 @@ def hardware_management():
         st.session_state.edit_row = None
 
 
-
-# ==========================
-# CLEAN HARDWARE TABLE (NEW VERSION)
-# ==========================
-
-st.write("Hardware Inventory (Compact View)")
-
-if "edit_row" not in st.session_state:
-    st.session_state.edit_row = None
-
-
-for index, row in df.iterrows():
-
+    
     # ==========================
-    # TABLE ROW (COMPACT VIEW)
+    # CLEAN HARDWARE TABLE (NEW VERSION)
     # ==========================
-    col1, col2, col3, col4, col5, col6 = st.columns([0.5, 2, 2, 2, 1, 1])
-
-    # --------------------------
-    # COLUMN 1 → EDIT BUTTON
-    # --------------------------
-    with col1:
-        if st.button("✏️", key=f"edit_{index}"):
-            st.session_state.edit_row = index
-
-    # --------------------------
-    # COLUMN 2 → MODEL NAME
-    # --------------------------
-    with col2:
-        st.write(row["Model_Name"])
-
-    # --------------------------
-    # COLUMN 3 → MANUFACTURER
-    # --------------------------
-    with col3:
-        st.write(row["Manufacturer"])
-
-    # --------------------------
-    # COLUMN 4 → VRAM
-    # --------------------------
-    with col4:
-        st.write(f"{row['VRAM_GB']} GB")
-
-    # --------------------------
-    # COLUMN 5 → POWER
-    # --------------------------
-    with col5:
-        st.write(f"{row['Power_W']} W")
-
-    # --------------------------
-    # COLUMN 6 → WORKLOAD RANGE
-    # --------------------------
-    with col6:
-        st.write(f"{row['Workload_Min']} - {row['Workload_Max']}")
-
-    # ==========================
-    # EDIT MODE (ONLY THIS ROW)
-    # ==========================
-    if st.session_state.edit_row == index:
-
-        st.markdown(
-            """
-            <div style="
-                background-color:#E8F5E9;
-                padding:12px;
-                border-radius:10px;
-                margin-top:10px;
-            ">
-            <b>Editing This Hardware</b>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        updated_values = {}
-
-        cols = st.columns(4)
-
-        for i, column in enumerate(df.columns):
-            with cols[i % 4]:
-                updated_values[column] = st.text_input(
-                    column,
-                    value=str(row[column]),
-                    key=f"edit_{column}_{index}"
-                )
-
-        btn1, btn2 = st.columns(2)
-
+    
+    st.write("Hardware Inventory (Compact View)")
+    
+    if "edit_row" not in st.session_state:
+        st.session_state.edit_row = None
+    
+    
+    for index, row in df.iterrows():
+    
+        # ==========================
+        # TABLE ROW (COMPACT VIEW)
+        # ==========================
+        col1, col2, col3, col4, col5, col6 = st.columns([0.5, 2, 2, 2, 1, 1])
+    
         # --------------------------
-        # UPDATE BUTTON
+        # COLUMN 1 → EDIT BUTTON
         # --------------------------
-        with btn1:
-            if st.button("✅ Update", key=f"update_{index}"):
-
-                for column in df.columns:
-                    df.loc[index, column] = updated_values[column]
-
-                save_database(df)
-
-                st.success("Updated Successfully")
-
-                st.session_state.edit_row = None
-
-                st.rerun()
-
+        with col1:
+            if st.button("✏️", key=f"edit_{index}"):
+                st.session_state.edit_row = index
+    
         # --------------------------
-        # CANCEL BUTTON
+        # COLUMN 2 → MODEL NAME
         # --------------------------
-        with btn2:
-            if st.button("❌ Cancel", key=f"cancel_{index}"):
-
-                st.session_state.edit_row = None
-
-                st.rerun()
-
-    st.divider()
+        with col2:
+            st.write(row["Model_Name"])
+    
+        # --------------------------
+        # COLUMN 3 → MANUFACTURER
+        # --------------------------
+        with col3:
+            st.write(row["Manufacturer"])
+    
+        # --------------------------
+        # COLUMN 4 → VRAM
+        # --------------------------
+        with col4:
+            st.write(f"{row['VRAM_GB']} GB")
+    
+        # --------------------------
+        # COLUMN 5 → POWER
+        # --------------------------
+        with col5:
+            st.write(f"{row['Power_W']} W")
+    
+        # --------------------------
+        # COLUMN 6 → WORKLOAD RANGE
+        # --------------------------
+        with col6:
+            st.write(f"{row['Workload_Min']} - {row['Workload_Max']}")
+    
+        # ==========================
+        # EDIT MODE (ONLY THIS ROW)
+        # ==========================
+        if st.session_state.edit_row == index:
+    
+            st.markdown(
+                """
+                <div style="
+                    background-color:#E8F5E9;
+                    padding:12px;
+                    border-radius:10px;
+                    margin-top:10px;
+                ">
+                <b>Editing This Hardware</b>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+    
+            updated_values = {}
+    
+            cols = st.columns(4)
+    
+            for i, column in enumerate(df.columns):
+                with cols[i % 4]:
+                    updated_values[column] = st.text_input(
+                        column,
+                        value=str(row[column]),
+                        key=f"edit_{column}_{index}"
+                    )
+    
+            btn1, btn2 = st.columns(2)
+    
+            # --------------------------
+            # UPDATE BUTTON
+            # --------------------------
+            with btn1:
+                if st.button("✅ Update", key=f"update_{index}"):
+    
+                    for column in df.columns:
+                        df.loc[index, column] = updated_values[column]
+    
+                    save_database(df)
+    
+                    st.success("Updated Successfully")
+    
+                    st.session_state.edit_row = None
+    
+                    st.rerun()
+    
+            # --------------------------
+            # CANCEL BUTTON
+            # --------------------------
+            with btn2:
+                if st.button("❌ Cancel", key=f"cancel_{index}"):
+    
+                    st.session_state.edit_row = None
+    
+                    st.rerun()
+    
+        st.divider()
 
 
     # ==========================
