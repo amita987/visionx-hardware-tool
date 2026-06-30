@@ -162,15 +162,15 @@ with customer_tab:
 
 
         workload = calculate_workload(
-
-            camera_count,
-
-            fps,
-
-            resolution,
-
-            ai_model
-
+        
+            customer_data["camera_count"],
+        
+            customer_data["fps"],
+        
+            customer_data["resolution"],
+        
+            customer_data["ai_model"]
+        
         )
 
 
