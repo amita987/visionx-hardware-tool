@@ -4,19 +4,31 @@
 
 import streamlit as st
 
+from recommendation_engine import (
+    calculate_workload,
+    recommend_gpu
+)
+
+
 
 # ==========================
 # WEBSITE TITLE
 # ==========================
 
-st.title("VisionX Hardware Recommendation Tool")
+st.title(
+    "VisionX Hardware Recommendation Tool"
+)
+
 
 
 # ==========================
 # CUSTOMER INPUT SECTION
 # ==========================
 
-st.header("Customer Inputs")
+st.header(
+    "Customer Inputs"
+)
+
 
 
 camera_count = st.number_input(
@@ -24,6 +36,7 @@ camera_count = st.number_input(
     min_value=1,
     value=10
 )
+
 
 
 resolution = st.selectbox(
@@ -38,8 +51,9 @@ resolution = st.selectbox(
 )
 
 
+
 fps = st.selectbox(
-    "Frames Per Second (FPS)",
+    "Frames Per Second",
     [
         5,
         15,
@@ -47,6 +61,7 @@ fps = st.selectbox(
         60
     ]
 )
+
 
 
 ai_model = st.selectbox(
@@ -65,27 +80,30 @@ ai_model = st.selectbox(
 # INPUT TABLE
 # ==========================
 
-st.subheader("Input Summary")
+st.subheader(
+    "Input Summary"
+)
+
 
 
 input_table = {
 
-    "Parameter":
-    [
-        "Camera Count",
-        "Resolution",
-        "FPS",
-        "AI Model"
-    ],
+"Parameter":
+[
+"Camera Count",
+"Resolution",
+"FPS",
+"AI Model"
+],
 
 
-    "Customer Value":
-    [
-        camera_count,
-        resolution,
-        fps,
-        ai_model
-    ]
+"Value":
+[
+camera_count,
+resolution,
+fps,
+ai_model
+]
 
 }
 
@@ -95,30 +113,73 @@ st.table(input_table)
 
 
 # ==========================
-# OUTPUT TABLE
+# CALCULATION BUTTON
 # ==========================
 
-st.subheader("Hardware Recommendation")
+
+if st.button("Recommend Hardware"):
 
 
-output_table = {
+
+    # ==========================
+    # CALCULATE WORKLOAD
+    # ==========================
+
+
+    workload = calculate_workload(
+
+        camera_count,
+        fps,
+        resolution,
+        ai_model
+
+    )
+
+
+
+    # ==========================
+    # LOOKUP HARDWARE
+    # ==========================
+
+
+    gpu = recommend_gpu(
+        workload
+    )
+
+
+
+    # ==========================
+    # OUTPUT TABLE
+    # ==========================
+
+
+    st.subheader(
+        "Recommendation"
+    )
+
+
+
+    output_table = {
+
 
     "Component":
     [
-        "GPU",
-        "VRAM",
-        "Power"
+    "Workload Score",
+    "GPU",
+    "VRAM",
+    "Power"
     ],
 
 
     "Recommendation":
     [
-        "Waiting for calculation",
-        "-",
-        "-"
+    workload,
+    gpu["GPU"],
+    gpu["VRAM"],
+    gpu["Power"]
     ]
 
-}
+    }
 
 
-st.table(output_table)
+    st.table(output_table)
