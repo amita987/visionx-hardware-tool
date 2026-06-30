@@ -75,285 +75,215 @@ def hardware_management():
 
 
 
+
     # ==========================
     # FULL HARDWARE TABLE
     # ==========================
-    
+
+
     st.write(
         "Hardware Inventory"
     )
-    
-    
-    # create action column
-    
+
+
+
     table_df = df.copy()
-    
-    
+
+
+
     table_df.insert(
-    
+
         0,
-    
+
         "Row",
-    
+
         range(1, len(df)+1)
-    
+
     )
-    
-    
-    table_df.insert(
-    
-        1,
-    
-        "Action",
-    
-        "✏️"
-    
-    )
-    
-    
-    
-    # ==========================
-    # DISPLAY FULL TABLE
-    # ==========================
-    
-    
+
+
+
     st.dataframe(
-    
+
         table_df,
-    
+
         use_container_width=True,
-    
+
         hide_index=True
-    
+
     )
 
 
+
+
     # ==========================
-    # TABLE ROWS
+    # EDIT SELECTED ROW
     # ==========================
 
-    for index, row in df.iterrows():
+
+    st.divider()
 
 
-        cols = st.columns(
-            [0.4,0.6,1,1,1.2,0.6,0.8,0.8,0.8,0.8,0.8,0.8,0.8]
+
+    st.subheader(
+
+        "Edit Hardware"
+
+    )
+
+
+
+    edit_index = st.selectbox(
+
+        "Select Hardware",
+
+        options=range(len(df)),
+
+        format_func=lambda x:
+
+        df.loc[x,"Model_Name"]
+
+    )
+
+
+
+    if st.button(
+
+        "✏️ Edit"
+
+    ):
+
+
+        st.session_state.edit_row = edit_index
+
+
+
+
+    # ==========================
+    # GREEN EDIT AREA
+    # ==========================
+
+
+    if st.session_state.edit_row is not None:
+
+
+        index = st.session_state.edit_row
+
+
+        row = df.loc[index]
+
+
+
+        st.markdown(
+
+        """
+
+        <div style="
+
+        background-color:#E8F5E9;
+
+        padding:15px;
+
+        border-radius:10px;
+
+        ">
+
+        <h3>
+        Editing Hardware Record
+        </h3>
+
+        </div>
+
+        """,
+
+        unsafe_allow_html=True
+
         )
 
 
-        with cols[0]:
 
-            st.write(index + 1)
-
+        edited = {}
 
 
-        # EDIT BUTTON
 
-        with cols[1]:
+        cols = st.columns(4)
+
+
+
+        for i,column in enumerate(df.columns):
+
+
+            with cols[i % 4]:
+
+
+                edited[column] = st.text_input(
+
+                    column,
+
+                    value=str(row[column]),
+
+                    key=f"edit_{index}_{column}"
+
+                )
+
+
+
+
+        update_col, cancel_col = st.columns(2)
+
+
+
+
+        with update_col:
 
 
             if st.button(
 
-                "✏️",
-
-                key=f"edit_{index}"
+                "✅ Update"
 
             ):
 
-                st.session_state.edit_row = index
 
+                for column in df.columns:
 
 
-        with cols[2]:
+                    df.loc[index,column] = edited[column]
 
-            st.write(
-                row["Hardware_Type"]
-            )
 
 
-        with cols[3]:
+                save_database(df)
 
-            st.write(
-                row["Manufacturer"]
-            )
 
 
-        with cols[4]:
+                st.success(
 
-            st.write(
-                row["Model_Name"]
-            )
+                    "Hardware Updated Successfully"
 
+                )
 
-        with cols[5]:
 
-            st.write(
-                row["VRAM_GB"]
-            )
+                st.session_state.edit_row = None
 
 
-        with cols[6]:
+                st.rerun()
 
-            st.write(
-                row["CUDA_Cores"]
-            )
 
 
-        with cols[7]:
 
-            st.write(
-                row["Tensor_Cores"]
-            )
+        with cancel_col:
 
 
-        with cols[8]:
+            if st.button(
 
-            st.write(
-                row["FP16_TFLOPS"]
-            )
+                "❌ Cancel"
 
+            ):
 
-        with cols[9]:
 
-            st.write(
-                row["INT8_TOPS"]
-            )
+                st.session_state.edit_row = None
 
 
-        with cols[10]:
-        
-            st.write(
-                row["Power_W"]
-            )
-        
-        
-        with cols[11]:
-        
-            st.write(
-                row["Workload_Min"]
-            )
-        
-        
-        with cols[12]:
-        
-            st.write(
-                row["Workload_Max"]
-            )
-
-
-        # ==========================
-        # EDIT ONLY SELECTED ROW
-        # ==========================
-
-
-        if st.session_state.edit_row == index:
-
-
-            st.markdown(
-
-            """
-
-            <div style="
-            background-color:#E8F5E9;
-            padding:15px;
-            border-radius:10px;
-            ">
-
-            <h3>
-            Editing Hardware
-            </h3>
-
-            </div>
-
-            """,
-
-            unsafe_allow_html=True
-
-            )
-
-
-            edited = {}
-
-
-            edit_cols = st.columns(4)
-
-
-
-            for i,column in enumerate(df.columns):
-
-
-                with edit_cols[i % 4]:
-
-
-                    edited[column] = st.text_input(
-
-                        column,
-
-                        value=str(row[column]),
-
-                        key=f"edit_{index}_{column}"
-
-                    )
-
-
-
-            save_col, cancel_col = st.columns(2)
-
-
-
-            with save_col:
-
-
-                if st.button(
-
-                    "✅ Update",
-
-                    key=f"save_{index}"
-
-                ):
-
-
-                    for column in df.columns:
-
-
-                        df.loc[index,column] = edited[column]
-
-
-
-                    save_database(df)
-
-
-                    st.success(
-                        "Updated Successfully"
-                    )
-
-
-                    st.session_state.edit_row = None
-
-
-                    st.rerun()
-
-
-
-            with cancel_col:
-
-
-                if st.button(
-
-                    "❌ Cancel",
-
-                    key=f"cancel_{index}"
-
-                ):
-
-
-                    st.session_state.edit_row = None
-
-
-                    st.rerun()
-
-
-
-        st.divider()
+                st.rerun()
 
 
 
@@ -363,11 +293,16 @@ def hardware_management():
     # ==========================
 
 
+    st.divider()
+
+
+
     if st.button(
 
         "➕ Add New Hardware"
 
     ):
+
 
         st.session_state.add_hardware = True
 
@@ -378,8 +313,11 @@ def hardware_management():
 
 
         st.subheader(
+
             "Add New Hardware"
+
         )
+
 
 
         new_row = {}
@@ -406,11 +344,11 @@ def hardware_management():
 
 
 
-        add_col, cancel_col = st.columns(2)
+        save_col, cancel_col = st.columns(2)
 
 
 
-        with add_col:
+        with save_col:
 
 
             if st.button(
@@ -426,10 +364,12 @@ def hardware_management():
                 save_database(df)
 
 
+
                 st.session_state.add_hardware = False
 
 
                 st.rerun()
+
 
 
 
