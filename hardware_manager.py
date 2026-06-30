@@ -104,7 +104,7 @@ def hardware_management():
     
         if st.button(
     
-            "✏️ Edit Row"
+            "✏️ Edit"
     
         ):
     
