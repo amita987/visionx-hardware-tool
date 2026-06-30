@@ -74,9 +74,29 @@ def hardware_management():
     # ==========================
 
 
-    st.write(
-        "Hardware Inventory"
-    )
+    # ==========================
+    # HARDWARE INVENTORY HEADER
+    # ==========================
+    
+    header_col, button_col = st.columns([5,1])
+    
+    
+    with header_col:
+    
+        st.subheader(
+            "Hardware Inventory"
+        )
+    
+    
+    with button_col:
+    
+        if st.button(
+    
+            "✏️ Edit"
+    
+        ):
+    
+            st.session_state.edit_mode = True
 
 
 
