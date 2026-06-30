@@ -366,6 +366,7 @@ with customer_tab:
 # HARDWARE DATABASE MANAGEMENT TAB
 # =================================================
 
+
 with database_tab:
 
 
@@ -373,19 +374,6 @@ with database_tab:
 
 
     hardware_management()
-
-
-
-    # ==========================
-    # LOAD CSV
-    # ==========================
-
-
-    hardware_data = pd.read_csv(
-
-        "hardware_database.csv"
-
-    )
 
 
 
