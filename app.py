@@ -109,13 +109,15 @@ unsafe_allow_html=True
 # CREATE TABS
 # ==========================
 
-customer_tab, database_tab = st.tabs(
+customer_tab, database_tab, logic_tab = st.tabs(
 
 [
 
 "Customer Recommendation",
 
-"Hardware Database Management"
+"Hardware Database Management",
+
+"Recommendation Logic"
 
 ]
 
@@ -374,3 +376,291 @@ with database_tab:
 
 
     hardware_management()
+# =================================================
+# RECOMMENDATION LOGIC TAB
+# =================================================
+
+
+with logic_tab:
+
+
+    st.header(
+
+        "Hardware Recommendation Logic"
+
+    )
+
+
+    logic_table = [
+
+        [
+
+            "Hardware Type",
+
+            "Workload type (AI Vision / Gaming / Server etc.)",
+
+            "Decide component category needed",
+
+            "AI Vision workload → GPU required",
+
+            "Select GPU hardware"
+
+        ],
+
+        [
+
+            "Manufacturer",
+
+            "Optional preference",
+
+            "Filter database by vendor",
+
+            "NVIDIA only",
+
+            "Keep matching vendor"
+
+        ],
+
+        [
+
+            "Model Name",
+
+            "None",
+
+            "Final output from lookup table",
+
+            "RTX 4060",
+
+            "Return selected model"
+
+        ],
+
+        [
+
+            "VRAM (GB)",
+
+            "Camera count, resolution, AI model",
+
+            "Calculate memory requirement",
+
+            "Model Memory + Camera Buffer + Safety Margin",
+
+            "VRAM ≥ Required VRAM"
+
+        ],
+
+        [
+
+            "CUDA Cores",
+
+            "Camera count, FPS, resolution",
+
+            "Estimate processing workload",
+
+            "Camera × FPS × Resolution Factor",
+
+            "CUDA ≥ Required CUDA"
+
+        ],
+
+        [
+
+            "Tensor Cores",
+
+            "AI Model",
+
+            "AI acceleration requirement",
+
+            "YOLOv10 needs more Tensor capacity than YOLOv8",
+
+            "Tensor ≥ Required Tensor"
+
+        ],
+
+        [
+
+            "FP16 Performance",
+
+            "FPS requirement, AI model",
+
+            "Estimate inference speed need",
+
+            "Higher FPS → Higher TFLOPS required",
+
+            "FP16 ≥ Required TFLOPS"
+
+        ],
+
+        [
+
+            "INT8 Performance",
+
+            "AI model, camera count, FPS",
+
+            "Estimate optimized inference need",
+
+            "Large camera count increases INT8 need",
+
+            "INT8 ≥ Required TOPS"
+
+        ],
+
+        [
+
+            "Power Consumption (W)",
+
+            "None",
+
+            "Used for system design",
+
+            "GPU 115W + CPU + margin",
+
+            "Select PSU/cooling"
+
+        ],
+
+        [
+
+            "Minimum Workload Score",
+
+            "Camera count, FPS, resolution",
+
+            "Lower boundary stored in database",
+
+            "RTX4060 starts at workload 500",
+
+            "Workload ≥ Minimum"
+
+        ],
+
+        [
+
+            "Maximum Workload Score",
+
+            "Camera count, FPS, resolution",
+
+            "Upper boundary stored in database",
+
+            "RTX4060 supports up to workload 1500",
+
+            "Workload ≤ Maximum"
+
+        ],
+
+        [
+
+            "Recommended Camera Count",
+
+            "Camera count",
+
+            "Customer-friendly conversion",
+
+            "RTX4060 → 20 cameras",
+
+            "Display to customer"
+
+        ],
+
+        [
+
+            "Max Resolution Support",
+
+            "Camera resolution",
+
+            "Convert resolution requirement",
+
+            "4K = higher requirement than 1080p",
+
+            "Required Resolution ≤ Supported Resolution"
+
+        ],
+
+        [
+
+            "Max FPS Support",
+
+            "FPS input",
+
+            "Compare real-time requirement",
+
+            "Customer needs 60 FPS",
+
+            "Required FPS ≤ Hardware FPS"
+
+        ],
+
+        [
+
+            "AI Model Compatibility",
+
+            "AI model selection",
+
+            "Match supported models",
+
+            "YOLOv8 supported",
+
+            "AI model must exist in list"
+
+        ],
+
+        [
+
+            "Price",
+
+            "Customer budget",
+
+            "Budget filtering",
+
+            "Budget $500",
+
+            "Price ≤ Budget"
+
+        ],
+
+        [
+
+            "Availability",
+
+            "None / admin data",
+
+            "Inventory check",
+
+            "Available",
+
+            "Remove unavailable products"
+
+        ]
+
+    ]
+
+
+    logic_df = pd.DataFrame(
+
+        logic_table,
+
+        columns=[
+
+            "Hardware Database Column",
+
+            "Customer Input Required",
+
+            "Backend Calculation / Logic",
+
+            "Example Calculation",
+
+            "Selection Rule"
+
+        ]
+
+    )
+
+
+    st.dataframe(
+
+        logic_df,
+
+        use_container_width=True,
+
+        hide_index=True
+
+    )
