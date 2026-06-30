@@ -1020,3 +1020,241 @@ st.dataframe(
     hide_index=True
 
 )
+# =================================================
+# HARDWARE DATABASE COLUMN REFERENCE TABLE
+# =================================================
+
+
+st.subheader(
+
+    "Hardware Database Column Reference"
+
+)
+
+
+
+hardware_column_table = [
+
+
+    [
+
+        "Hardware Type",
+
+        "GPU",
+
+        "To identify the hardware category"
+
+    ],
+
+
+    [
+
+        "Manufacturer",
+
+        "NVIDIA",
+
+        "To identify vendor"
+
+    ],
+
+
+    [
+
+        "Model Name",
+
+        "RTX 4060",
+
+        "Final recommended hardware name"
+
+    ],
+
+
+    [
+
+        "VRAM (GB)",
+
+        "8",
+
+        "Determines how many AI models/streams can fit"
+
+    ],
+
+
+    [
+
+        "CUDA Cores",
+
+        "3072",
+
+        "Measures parallel processing capability"
+
+    ],
+
+
+    [
+
+        "Tensor Cores",
+
+        "96",
+
+        "AI acceleration capability"
+
+    ],
+
+
+    [
+
+        "FP16 Performance",
+
+        "15 TFLOPS",
+
+        "Deep learning inference speed"
+
+    ],
+
+
+    [
+
+        "INT8 Performance",
+
+        "242 TOPS",
+
+        "Optimized AI inference performance"
+
+    ],
+
+
+    [
+
+        "Power Consumption (W)",
+
+        "115W",
+
+        "Power supply and thermal planning"
+
+    ],
+
+
+    [
+
+        "Minimum Workload Score",
+
+        "500",
+
+        "Lowest workload this hardware should handle"
+
+    ],
+
+
+    [
+
+        "Maximum Workload Score",
+
+        "1500",
+
+        "Highest recommended workload"
+
+    ],
+
+
+    [
+
+        "Recommended Camera Count",
+
+        "20",
+
+        "Easy customer-facing estimate"
+
+    ],
+
+
+    [
+
+        "Max Resolution Support",
+
+        "4K",
+
+        "Highest camera resolution supported"
+
+    ],
+
+
+    [
+
+        "Max FPS Support",
+
+        "30",
+
+        "Maximum real-time frame rate"
+
+    ],
+
+
+    [
+
+        "AI Model Compatibility",
+
+        "YOLOv8, YOLOv10",
+
+        "Checks AI model suitability"
+
+    ],
+
+
+    [
+
+        "Price",
+
+        "$299",
+
+        "Budget calculation"
+
+    ],
+
+
+    [
+
+        "Availability",
+
+        "Available",
+
+        "Product availability tracking"
+
+    ]
+
+]
+
+
+
+hardware_column_df = pd.DataFrame(
+
+
+    hardware_column_table,
+
+
+    columns=[
+
+
+        "Column Name",
+
+        "Example",
+
+        "Why We Need It"
+
+
+    ]
+
+
+)
+
+
+
+st.dataframe(
+
+    hardware_column_df,
+
+    use_container_width=True,
+
+    hide_index=True
+
+)
