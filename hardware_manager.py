@@ -80,30 +80,16 @@ def hardware_management():
     # ==========================
     
     
-    header_col, row_col, button_col = st.columns([4,2,1])
+    
+    header_col, button_col = st.columns([5,1])
+    
     
     
     with header_col:
     
         st.subheader(
+    
             "Hardware Inventory"
-        )
-    
-    
-    
-    with row_col:
-    
-        edit_row_number = st.number_input(
-    
-            "Edit Row",
-    
-            min_value=1,
-    
-            max_value=len(df),
-    
-            value=1,
-    
-            step=1
     
         )
     
@@ -113,13 +99,14 @@ def hardware_management():
     
         st.write("")
     
+    
         if st.button(
     
             "✏️ Edit"
     
         ):
     
-            st.session_state.edit_row = edit_row_number - 1
+            st.session_state.edit_mode = True
 
 
 
