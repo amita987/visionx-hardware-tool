@@ -787,3 +787,242 @@ st.dataframe(
     hide_index=True
 
 )
+# =================================================
+# CALCULATION LOGIC TAB
+# =================================================
+
+
+with calculation_tab:
+
+
+    st.header(
+
+        "Backend Calculation Logic"
+
+    )
+
+
+
+    calculation_table = [
+
+
+        [
+
+            "Workload Score",
+
+            "Camera Count × FPS × Resolution Factor × AI Model Factor"
+
+        ],
+
+
+        [
+
+            "VRAM Required",
+
+            "Model Memory + Camera Memory + Safety Margin"
+
+        ],
+
+
+        [
+
+            "CUDA Requirement",
+
+            "Workload Score × Processing Factor"
+
+        ],
+
+
+        [
+
+            "Tensor Requirement",
+
+            "AI Model Complexity Factor"
+
+        ],
+
+
+        [
+
+            "FP16 Requirement",
+
+            "FPS × Camera Count × Model Factor"
+
+        ],
+
+
+        [
+
+            "INT8 Requirement",
+
+            "Workload Score × Optimization Factor"
+
+        ]
+
+    ]
+
+
+
+    calculation_df = pd.DataFrame(
+
+        calculation_table,
+
+        columns=[
+
+            "Calculation",
+
+            "Formula"
+
+        ]
+
+    )
+
+
+
+    st.dataframe(
+
+        calculation_df,
+
+        use_container_width=True,
+
+        hide_index=True
+
+    )
+
+# =================================================
+# SELECTION LOGIC TAB
+# =================================================
+
+
+with selection_tab:
+
+
+    st.header(
+
+        "Hardware Selection Process"
+
+    )
+
+
+
+    selection_table = [
+
+
+        [
+
+            "1",
+
+            "Remove unavailable hardware"
+
+        ],
+
+
+        [
+
+            "2",
+
+            "Remove over-budget hardware"
+
+        ],
+
+
+        [
+
+            "3",
+
+            "Check workload range"
+
+        ],
+
+
+        [
+
+            "4",
+
+            "Check VRAM"
+
+        ],
+
+
+        [
+
+            "5",
+
+            "Check CUDA"
+
+        ],
+
+
+        [
+
+            "6",
+
+            "Check Tensor cores"
+
+        ],
+
+
+        [
+
+            "7",
+
+            "Check FP16"
+
+        ],
+
+
+        [
+
+            "8",
+
+            "Check INT8"
+
+        ],
+
+
+        [
+
+            "9",
+
+            "Rank remaining hardware"
+
+        ],
+
+
+        [
+
+            "10",
+
+            "Recommend best match"
+
+        ]
+
+    ]
+
+
+
+    selection_df = pd.DataFrame(
+
+        selection_table,
+
+        columns=[
+
+            "Step",
+
+            "Check"
+
+        ]
+
+    )
+
+
+
+    st.dataframe(
+
+        selection_df,
+
+        use_container_width=True,
+
+        hide_index=True
+
+    )
