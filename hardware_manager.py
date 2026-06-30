@@ -60,36 +60,35 @@ def hardware_management():
 
 
     # ==========================
+    # SESSION SETTINGS
+    # ==========================
+
+    if "edit_row" not in st.session_state:
+
+        st.session_state.edit_row = None
+
+
+
+    if "add_hardware" not in st.session_state:
+
+        st.session_state.add_hardware = False
+
+
+
+    # ==========================
     # HARDWARE TABLE DISPLAY
     # ==========================
 
 
     st.write(
-        "Hardware Inventory"
+        "Current Hardware Database"
     )
 
-
-    # --------------------------
-    # ACTION COLUMN
-    # --------------------------
-
-    display_df = df.copy()
-
-
-    display_df.insert(
-
-        0,
-
-        "Action",
-
-        "✏️"
-
-    )
 
 
     st.dataframe(
 
-        display_df,
+        df,
 
         use_container_width=True,
 
@@ -100,66 +99,52 @@ def hardware_management():
 
 
     # ==========================
-    # EDIT SELECTION AREA
+    # SELECT HARDWARE TO EDIT
     # ==========================
 
 
-    st.write("")
+    st.divider()
 
 
-    edit_col1, edit_col2 = st.columns(
 
-        [2,8]
+    st.subheader(
+        "Edit Hardware"
+    )
+
+
+
+    edit_index = st.selectbox(
+
+        "Select Hardware",
+
+        options=range(len(df)),
+
+        format_func=lambda x:
+        df.loc[x,"Model_Name"]
 
     )
 
 
 
-    with edit_col1:
+    if st.button(
+
+        "✏️ Edit"
+
+    ):
 
 
-        edit_index = st.selectbox(
-
-            "Select Row",
-
-            options=range(len(df)),
-
-            format_func=lambda x:
-            df.loc[x,"Model_Name"]
-
-        )
-
-
-
-    with edit_col2:
-
-
-        if st.button(
-
-            "✏️ Edit"
-
-        ):
-
-
-            st.session_state.edit_row = edit_index
+        st.session_state.edit_row = edit_index
 
 
 
 
 
     # ==========================
-    # EDIT PANEL
+    # EDIT SECTION
     # ==========================
 
 
-    if st.session_state.get(
-
-        "edit_row",
-
-        None
-
-    ) is not None:
-
+    if st.session_state.edit_row is not None:
 
 
         index = st.session_state.edit_row
@@ -170,7 +155,7 @@ def hardware_management():
 
 
         # ==========================
-        # GREEN EDIT AREA
+        # GREEN BACKGROUND
         # ==========================
 
 
@@ -180,19 +165,17 @@ def hardware_management():
 
         <div style="
 
-        background-color:#E6F4EA;
+        background-color:#E8F5E9;
 
-        padding:15px;
+        padding:20px;
 
-        border-radius:8px;
-
-        margin-top:10px;
+        border-radius:10px;
 
         ">
 
-        <h4>
+        <h3>
         Editing Hardware Record
-        </h4>
+        </h3>
 
         </div>
 
@@ -244,11 +227,7 @@ def hardware_management():
         # ==========================
 
 
-        update_col, cancel_col = st.columns(
-
-            [1,1]
-
-        )
+        update_col, cancel_col = st.columns(2)
 
 
 
@@ -259,10 +238,9 @@ def hardware_management():
 
                 "✅ Update",
 
-                key=f"update_{index}"
+                key="update_button"
 
             ):
-
 
 
                 for column in df.columns:
@@ -283,7 +261,6 @@ def hardware_management():
                 )
 
 
-
                 st.session_state.edit_row = None
 
 
@@ -298,7 +275,7 @@ def hardware_management():
 
                 "❌ Cancel",
 
-                key=f"cancel_{index}"
+                key="cancel_button"
 
             ):
 
@@ -310,8 +287,10 @@ def hardware_management():
 
 
 
+
+
     # ==========================
-    # ADD HARDWARE BUTTON
+    # ADD NEW HARDWARE BUTTON
     # ==========================
 
 
@@ -331,18 +310,13 @@ def hardware_management():
 
 
 
+
     # ==========================
     # ADD HARDWARE FORM
     # ==========================
 
 
-    if st.session_state.get(
-
-        "add_hardware",
-
-        False
-
-    ):
+    if st.session_state.add_hardware:
 
 
         st.subheader(
@@ -350,6 +324,7 @@ def hardware_management():
             "Add New Hardware"
 
         )
+
 
 
         new_row = {}
@@ -380,11 +355,7 @@ def hardware_management():
 
 
 
-        save_col, cancel_col = st.columns(
-
-            [1,1]
-
-        )
+        save_col, cancel_col = st.columns(2)
 
 
 
