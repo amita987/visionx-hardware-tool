@@ -12,63 +12,56 @@ import pandas as pd
 
 def load_hardware_database():
 
-    database = pd.read_csv(
+    hardware = pd.read_csv(
         "hardware_database.csv"
     )
 
-    return database
+    return hardware
 
 
 
 # ==========================
-# RESOLUTION CALCULATION
+# RESOLUTION FACTOR
 # ==========================
 
-def get_resolution_factor(resolution):
+def resolution_factor(resolution):
+
+    factors = {
+
+        "1080p": 1,
+        "2K": 2,
+        "4K": 3,
+        "8K": 5
+
+    }
 
 
-    if resolution == "720p":
-        return 1
-
-
-    elif resolution == "1080p":
-        return 2
-
-
-    elif resolution == "2K":
-        return 3
-
-
-    elif resolution == "4K":
-        return 5
-
-
-    elif resolution == "8K":
-        return 8
+    return factors.get(
+        resolution,
+        1
+    )
 
 
 
 # ==========================
-# AI MODEL CALCULATION
+# AI MODEL FACTOR
 # ==========================
 
-def get_model_factor(ai_model):
+def model_factor(model):
+
+    factors = {
+
+        "YOLOv8": 2,
+        "YOLOv10": 3,
+        "Detectron2": 4
+
+    }
 
 
-    if ai_model == "OpenCV":
-        return 1
-
-
-    elif ai_model == "YOLOv8":
-        return 3
-
-
-    elif ai_model == "YOLOv10":
-        return 4
-
-
-    elif ai_model == "Detectron2":
-        return 5
+    return factors.get(
+        model,
+        1
+    )
 
 
 
@@ -77,32 +70,22 @@ def get_model_factor(ai_model):
 # ==========================
 
 def calculate_workload(
-        camera_count,
-        fps,
-        resolution,
-        ai_model
+    cameras,
+    fps,
+    resolution,
+    model
 ):
-
-
-    resolution_factor = get_resolution_factor(
-        resolution
-    )
-
-
-    model_factor = get_model_factor(
-        ai_model
-    )
 
 
     workload = (
 
-        camera_count
+        cameras
         *
         fps
         *
-        resolution_factor
+        resolution_factor(resolution)
         *
-        model_factor
+        model_factor(model)
 
     )
 
@@ -112,16 +95,17 @@ def calculate_workload(
 
 
 # ==========================
-# HARDWARE LOOKUP
+# HARDWARE RECOMMENDATION
 # ==========================
 
-def recommend_gpu(workload):
+def recommend_hardware(workload):
 
 
-    database = load_hardware_database()
+    hardware = load_hardware_database()
 
 
-    for index,row in database.iterrows():
+
+    for index,row in hardware.iterrows():
 
 
         if (
@@ -133,6 +117,7 @@ def recommend_gpu(workload):
             workload <= row["Workload_Max"]
 
         ):
+
 
             return row
 
