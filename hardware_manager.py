@@ -43,59 +43,6 @@ def save_database(df):
 
 
 
-# ==========================
-# HARDWARE MANAGEMENT PAGE
-# ==========================
-
-def hardware_management():
-
-
-    st.subheader(
-        "Hardware Database Management"
-    )
-
-
-    df = load_database()
-
-
-
-    # ==========================
-    # HARDWARE TABLE DISPLAY
-    # ==========================
-
-
-    st.write(
-        "Hardware Inventory"
-    )
-
-
-    # --------------------------
-    # ACTION COLUMN
-    # --------------------------
-
-    display_df = df.copy()
-
-
-    display_df.insert(
-
-        0,
-
-        "Action",
-
-        "✏️"
-
-    )
-
-
-    st.dataframe(
-
-        display_df,
-
-        use_container_width=True,
-
-        hide_index=True
-
-    )
 
 
 
@@ -119,122 +66,105 @@ def hardware_management():
 
     
     # ==========================
-    # CLEAN HARDWARE TABLE (NEW VERSION)
+    # HARDWARE TABLE WITH HEADERS
     # ==========================
     
-    st.write("Hardware Inventory (Compact View)")
+    st.write("Hardware Inventory")
     
-    if "edit_row" not in st.session_state:
-        st.session_state.edit_row = None
     
+    # ==========================
+    # TABLE HEADER
+    # ==========================
+    
+    header = st.columns(
+        [0.5,1,2,2,2,1,1,1,1]
+    )
+    
+    
+    headers = [
+    
+        "Row",
+        "Action",
+        "Hardware Type",
+        "Manufacturer",
+        "Model Name",
+        "VRAM",
+        "CUDA Cores",
+        "Tensor Cores",
+        "FP16"
+    
+    ]
+    
+    
+    for col, text in zip(header, headers):
+    
+        with col:
+            st.markdown(
+                f"**{text}**"
+            )
+    
+    
+    
+    st.divider()
+    
+    
+    
+    # ==========================
+    # TABLE ROWS
+    # ==========================
     
     for index, row in df.iterrows():
     
-        # ==========================
-        # TABLE ROW (COMPACT VIEW)
-        # ==========================
-        col1, col2, col3, col4, col5, col6 = st.columns([0.5, 2, 2, 2, 1, 1])
     
-        # --------------------------
-        # COLUMN 1 → EDIT BUTTON
-        # --------------------------
-        with col1:
-            if st.button("✏️", key=f"edit_{index}"):
+        cols = st.columns(
+            [0.5,1,2,2,2,1,1,1,1]
+        )
+    
+    
+        with cols[0]:
+            st.write(index + 1)
+    
+    
+    
+        with cols[1]:
+    
+            if st.button(
+                "✏️",
+                key=f"edit_{index}"
+            ):
+    
                 st.session_state.edit_row = index
     
-        # --------------------------
-        # COLUMN 2 → MODEL NAME
-        # --------------------------
-        with col2:
-            st.write(row["Model_Name"])
     
-        # --------------------------
-        # COLUMN 3 → MANUFACTURER
-        # --------------------------
-        with col3:
+    
+        with cols[2]:
+            st.write(row["Hardware_Type"])
+    
+    
+        with cols[3]:
             st.write(row["Manufacturer"])
     
-        # --------------------------
-        # COLUMN 4 → VRAM
-        # --------------------------
-        with col4:
-            st.write(f"{row['VRAM_GB']} GB")
     
-        # --------------------------
-        # COLUMN 5 → POWER
-        # --------------------------
-        with col5:
-            st.write(f"{row['Power_W']} W")
+        with cols[4]:
+            st.write(row["Model_Name"])
     
-        # --------------------------
-        # COLUMN 6 → WORKLOAD RANGE
-        # --------------------------
-        with col6:
-            st.write(f"{row['Workload_Min']} - {row['Workload_Max']}")
     
-        # ==========================
-        # EDIT MODE (ONLY THIS ROW)
-        # ==========================
-        if st.session_state.edit_row == index:
+        with cols[5]:
+            st.write(row["VRAM_GB"])
     
-            st.markdown(
-                """
-                <div style="
-                    background-color:#E8F5E9;
-                    padding:12px;
-                    border-radius:10px;
-                    margin-top:10px;
-                ">
-                <b>Editing This Hardware</b>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
     
-            updated_values = {}
+        with cols[6]:
+            st.write(row["CUDA_Cores"])
     
-            cols = st.columns(4)
     
-            for i, column in enumerate(df.columns):
-                with cols[i % 4]:
-                    updated_values[column] = st.text_input(
-                    
-                        column,
-                    
-                        value=str(row[column]),
-                    
-                        key=f"edit_{index}_{column}"
-                    
-                    )
+        with cols[7]:
+            st.write(row["Tensor_Cores"])
     
-            btn1, btn2 = st.columns(2)
     
-            # --------------------------
-            # UPDATE BUTTON
-            # --------------------------
-            with btn1:
-                if st.button("✅ Update", key=f"update_{index}"):
+        with cols[8]:
+            st.write(row["FP16_TFLOPS"])
     
-                    for column in df.columns:
-                        df.loc[index, column] = updated_values[column]
     
-                    save_database(df)
-    
-                    st.success("Updated Successfully")
-    
-                    st.session_state.edit_row = None
-    
-                    st.rerun()
-    
-            # --------------------------
-            # CANCEL BUTTON
-            # --------------------------
-            with btn2:
-                if st.button("❌ Cancel", key=f"cancel_{index}"):
-    
-                    st.session_state.edit_row = None
-    
-                    st.rerun()
     
         st.divider()
 
