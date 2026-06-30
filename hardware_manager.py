@@ -179,23 +179,15 @@ def hardware_management():
         """
 
         <div style="
-
-        background-color:#E6F4EA;
-
-        padding:15px;
-
-        border-radius:8px;
-
-        margin-top:10px;
-
+            background-color:#E8F5E9;
+            padding:15px;
+            border-radius:10px;
+            margin-top:10px;
         ">
-
-        <h4>
-        Editing Hardware Record
-        </h4>
-
+            <h3 style="margin:0;">
+                Editing Hardware Record
+            </h3>
         </div>
-
         """,
 
         unsafe_allow_html=True
