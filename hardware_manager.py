@@ -76,50 +76,56 @@ def hardware_management():
 
 
     # ==========================
-    # TABLE HEADER
+    # FULL HARDWARE TABLE
     # ==========================
-
+    
     st.write(
         "Hardware Inventory"
     )
-
-
-    header = st.columns(
-        [0.4,0.6,1,1,1.2,0.6,0.8,0.8,0.8,0.8,0.8,0.8,0.8]
-    )
-
-
-    headings = [
+    
+    
+    # create action column
+    
+    table_df = df.copy()
+    
+    
+    table_df.insert(
+    
+        0,
     
         "Row",
-        "Action",
-        "Type",
-        "Manufacturer",
-        "Model",
-        "VRAM",
-        "CUDA",
-        "Tensor",
-        "FP16",
-        "INT8",
-        "Power",
-        "Min",
-        "Max"
     
-    ]
-
-
-    for col, title in zip(header, headings):
-
-        with col:
-
-            st.markdown(
-                f"**{title}**"
-            )
-
-
-
-    st.divider()
-
+        range(1, len(df)+1)
+    
+    )
+    
+    
+    table_df.insert(
+    
+        1,
+    
+        "Action",
+    
+        "✏️"
+    
+    )
+    
+    
+    
+    # ==========================
+    # DISPLAY FULL TABLE
+    # ==========================
+    
+    
+    st.dataframe(
+    
+        table_df,
+    
+        use_container_width=True,
+    
+        hide_index=True
+    
+    )
 
 
     # ==========================
