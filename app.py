@@ -42,7 +42,6 @@ f"""
 
 <style>
 
-
 .main-header {{
 
 background-color:{PRIMARY_COLOR};
@@ -56,18 +55,7 @@ color:white;
 }}
 
 
-.card {{
-
-background-color:{SECONDARY_COLOR};
-
-padding:20px;
-
-border-radius:10px;
-
-}}
-
-
-.success-card {{
+.result-card {{
 
 background-color:{SUCCESS_COLOR};
 
@@ -79,7 +67,6 @@ border-radius:10px;
 
 
 </style>
-
 
 """,
 
@@ -105,7 +92,7 @@ VisionX Hardware Recommendation Tool
 </h1>
 
 <p>
-AI Vision System Hardware Advisor
+AI Vision System Hardware Advisor - Version 1.0
 </p>
 
 </div>
@@ -118,14 +105,9 @@ unsafe_allow_html=True
 
 
 
-st.write("")
-
-
-
 # ==========================
 # CREATE TABS
 # ==========================
-
 
 customer_tab, database_tab = st.tabs(
 
@@ -142,98 +124,90 @@ customer_tab, database_tab = st.tabs(
 
 
 # =================================================
-# CUSTOMER TAB
+# CUSTOMER RECOMMENDATION TAB
 # =================================================
 
 
 with customer_tab:
 
 
-    st.subheader(
-
-        "Camera & AI Requirements"
-
+    st.header(
+        "Customer Configuration"
     )
 
 
     # ==========================
-    # INPUT CARD
+    # INPUT SECTION
     # ==========================
 
 
-    with st.container():
-
-
-        col1,col2 = st.columns(2)
+    col1, col2 = st.columns(2)
 
 
 
-        with col1:
+    with col1:
 
 
-            camera_count = st.number_input(
+        camera_count = st.number_input(
 
-                "Number of Cameras",
+            "Number of Cameras",
 
-                min_value=1,
+            min_value=1,
 
-                value=10
+            value=10
 
-            )
+        )
 
 
+        resolution = st.selectbox(
 
-            resolution = st.selectbox(
+            "Camera Resolution",
 
-                "Resolution",
-
-                [
+            [
 
                 "1080p",
                 "2K",
                 "4K",
                 "8K"
 
-                ]
+            ]
 
-            )
-
-
-
-        with col2:
+        )
 
 
-            fps = st.selectbox(
 
-                "FPS",
+    with col2:
 
-                [
+
+        fps = st.selectbox(
+
+            "Frames Per Second",
+
+            [
 
                 5,
                 15,
                 30,
                 60
 
-                ]
+            ]
 
-            )
+        )
 
 
+        ai_model = st.selectbox(
 
-            ai_model = st.selectbox(
+            "AI Model",
 
-                "AI Model",
-
-                [
+            [
 
                 "YOLOv8",
                 "YOLOv10",
                 "Detectron2"
 
-                ]
+            ]
 
-            )
-
+        )
 
 
 
@@ -242,7 +216,7 @@ with customer_tab:
 
 
     # ==========================
-    # RECOMMEND BUTTON
+    # RECOMMENDATION BUTTON
     # ==========================
 
 
@@ -251,6 +225,11 @@ with customer_tab:
         "Generate Recommendation"
 
     ):
+
+
+        # ==========================
+        # CALCULATE WORKLOAD
+        # ==========================
 
 
         workload = calculate_workload(
@@ -267,6 +246,11 @@ with customer_tab:
 
 
 
+        # ==========================
+        # FIND HARDWARE
+        # ==========================
+
+
         gpu = recommend_hardware(
 
             workload
@@ -275,7 +259,154 @@ with customer_tab:
 
 
 
+        # ==========================
+        # CHECK RESULT
+        # ==========================
+
+
         if gpu is None:
 
 
-           
+            st.error(
+
+                "No suitable hardware found"
+
+            )
+
+
+        else:
+
+
+            # ==========================
+            # OUTPUT CARD
+            # ==========================
+
+
+            st.markdown(
+
+            """
+
+            <div class="result-card">
+
+            <h3>
+            Recommended Hardware
+            </h3>
+
+            </div>
+
+            """,
+
+            unsafe_allow_html=True
+
+            )
+
+
+
+            # ==========================
+            # OUTPUT TABLE
+            # ==========================
+
+
+            output_table = {
+
+
+            "Component":
+
+            [
+
+            "Workload Score",
+
+            "Hardware Type",
+
+            "Manufacturer",
+
+            "Model Name",
+
+            "VRAM",
+
+            "Power"
+
+            ],
+
+
+
+            "Value":
+
+            [
+
+            workload,
+
+            gpu["Hardware_Type"],
+
+            gpu["Manufacturer"],
+
+            gpu["Model_Name"],
+
+            gpu["VRAM_GB"],
+
+            gpu["Power_W"]
+
+            ]
+
+            }
+
+
+
+            st.table(
+
+                output_table
+
+            )
+
+
+
+
+
+# =================================================
+# HARDWARE DATABASE MANAGEMENT TAB
+# =================================================
+
+
+with database_tab:
+
+
+    st.header(
+
+        "Hardware Database Management"
+
+    )
+
+
+    st.write(
+
+        "Current hardware reference database"
+
+    )
+
+
+
+    # ==========================
+    # LOAD CSV
+    # ==========================
+
+
+    hardware_data = pd.read_csv(
+
+        "hardware_database.csv"
+
+    )
+
+
+
+    # ==========================
+    # DISPLAY TABLE
+    # ==========================
+
+
+    st.dataframe(
+
+        hardware_data,
+
+        use_container_width=True
+
+    )
