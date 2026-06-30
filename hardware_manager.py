@@ -85,22 +85,26 @@ def hardware_management():
 
 
     header = st.columns(
-        [0.5,0.8,1.5,1.5,1.8,0.8,1,1,1]
+        [0.4,0.6,1,1,1.2,0.6,0.8,0.8,0.8,0.8,0.8,0.8,0.8]
     )
 
 
     headings = [
-
+    
         "Row",
         "Action",
-        "Hardware Type",
+        "Type",
         "Manufacturer",
-        "Model Name",
+        "Model",
         "VRAM",
         "CUDA",
         "Tensor",
-        "FP16"
-
+        "FP16",
+        "INT8",
+        "Power",
+        "Min",
+        "Max"
+    
     ]
 
 
@@ -126,7 +130,7 @@ def hardware_management():
 
 
         cols = st.columns(
-            [0.5,0.8,1.5,1.5,1.8,0.8,1,1,1]
+            [0.4,0.6,1,1,1.2,0.6,0.8,0.8,0.8,0.8,0.8,0.8,0.8]
         )
 
 
@@ -201,6 +205,33 @@ def hardware_management():
                 row["FP16_TFLOPS"]
             )
 
+
+        with cols[9]:
+
+            st.write(
+                row["INT8_TOPS"]
+            )
+
+
+        with cols[10]:
+        
+            st.write(
+                row["Power_W"]
+            )
+        
+        
+        with cols[11]:
+        
+            st.write(
+                row["Workload_Min"]
+            )
+        
+        
+        with cols[12]:
+        
+            st.write(
+                row["Workload_Max"]
+            )
 
 
         # ==========================
