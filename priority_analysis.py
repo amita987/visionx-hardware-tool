@@ -132,7 +132,7 @@ def get_priority_recommendation(customer_output, weights=None, csv_path="hardwar
         ascending=False
     ).head(10)
 
-return result_df
+    return result_df
 
 
 # ==========================
