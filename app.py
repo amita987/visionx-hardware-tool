@@ -9,6 +9,8 @@ from customer_input import get_customer_inputs
 
 from output import generate_output
 
+from recommendation_logic import show_recommendation_logic
+
 from recommendation_engine import (
     calculate_workload,
     recommend_hardware
@@ -293,25 +295,7 @@ with database_tab:
 with logic_tab:
 
 
-    st.header(
-
-        "Hardware Recommendation Logic"
-
-    )
-
-
-    st.write(
-
-        "Recommendation engine logic tables"
-
-    )
-
-
-    st.info(
-
-        "Existing recommendation logic tables remain here"
-
-    )
+    show_recommendation_logic()
 
 
 
