@@ -5,7 +5,7 @@
 import pandas as pd
 
 # ==========================
-# DEFAULT WEIGHTS (editable later)
+# DEFAULT WEIGHTS
 # ==========================
 
 DEFAULT_WEIGHTS = {
@@ -15,16 +15,13 @@ DEFAULT_WEIGHTS = {
     "Tensor_Cores_weight": 1,
     "FP16_TFLOPS_weight": 1,
     "INT8_TOPS_weight": 1,
-    "Price_weight": 1,
-
-    # subjective (fixed weight = 1 but kept for structure clarity)
-    "subjective_weight": 1
+    "Price_weight": 1
 
 }
 
 
 # ==========================
-# LOAD / USE WEIGHTS
+# LOAD WEIGHTS
 # ==========================
 
 def get_weights(custom_weights=None):
@@ -36,50 +33,14 @@ def get_weights(custom_weights=None):
 
 
 # ==========================
-# 0/1 CHECK FUNCTIONS
-# ==========================
-
-def check_vram(row, required_vram):
-
-    return 1 if row["VRAM_GB"] >= required_vram else 0
-
-
-def check_cuda(row, required_cuda):
-
-    return 1 if row["CUDA_Cores"] >= required_cuda else 0
-
-
-def check_tensor(row, required_tensor):
-
-    return 1 if row["Tensor_Cores"] >= required_tensor else 0
-
-
-def check_fp16(row, required_fp16):
-
-    return 1 if row["FP16_TFLOPS"] >= required_fp16 else 0
-
-
-def check_int8(row, required_int8):
-
-    return 1 if row["INT8_TOPS"] >= required_int8 else 0
-
-
-def check_price(row, max_price):
-
-    return 1 if row["Price"] <= max_price else 0
-
-
-# ==========================
-# MAIN RANKING FUNCTION
+# MAIN PRIORITY ENGINE
 # ==========================
 
 def get_priority_recommendation(customer_output, weights=None, csv_path="hardware_database.csv"):
 
-
     df = pd.read_csv(csv_path)
 
     w = get_weights(weights)
-
 
     required_vram = customer_output["VRAM Required (GB)"]
     required_cuda = customer_output["CUDA Required"]
@@ -89,53 +50,98 @@ def get_priority_recommendation(customer_output, weights=None, csv_path="hardwar
     max_price = customer_output.get("Budget", 999999)
 
 
-    scores = []
+    results = []
 
 
     for _, row in df.iterrows():
 
 
-        score = 0
+        # ==========================
+        # HARD MATCH (0/1)
+        # ==========================
+
+        vram_score = 1 if row["VRAM_GB"] >= required_vram else 0
+        cuda_score = 1 if row["CUDA_Cores"] >= required_cuda else 0
+        tensor_score = 1 if row["Tensor_Cores"] >= required_tensor else 0
+        fp16_score = 1 if row["FP16_TFLOPS"] >= required_fp16 else 0
+        int8_score = 1 if row["INT8_TOPS"] >= required_int8 else 0
+        price_score = 1 if row["Price"] <= max_price else 0
 
 
         # ==========================
-        # HARD CHECKS (0/1 × WEIGHT)
+        # WEIGHTED CONTRIBUTIONS
         # ==========================
 
-        score += check_vram(row, required_vram) * w["VRAM_GB_weight"]
-        score += check_cuda(row, required_cuda) * w["CUDA_Cores_weight"]
-        score += check_tensor(row, required_tensor) * w["Tensor_Cores_weight"]
-        score += check_fp16(row, required_fp16) * w["FP16_TFLOPS_weight"]
-        score += check_int8(row, required_int8) * w["INT8_TOPS_weight"]
-        score += check_price(row, max_price) * w["Price_weight"]
+        vram = vram_score * w["VRAM_GB_weight"]
+        cuda = cuda_score * w["CUDA_Cores_weight"]
+        tensor = tensor_score * w["Tensor_Cores_weight"]
+        fp16 = fp16_score * w["FP16_TFLOPS_weight"]
+        int8 = int8_score * w["INT8_TOPS_weight"]
+        price = price_score * w["Price_weight"]
 
 
         # ==========================
-        # SUBJECTIVE FIELDS (always 1)
+        # SUBJECTIVE FIELDS (fixed boost)
         # ==========================
 
-        score += 1  # Hardware_Type
-        score += 1  # Manufacturer
-        score += 1  # Model_Name
-        score += 1  # Recommended_Cameras
-        score += 1  # Availability
+        hardware_type = 1
+        manufacturer = 1
+        model_name = 1
+        cameras = 1
+        availability = 1 if row["Availability"] == "Available" else 0
 
 
-        scores.append(score)
+        # ==========================
+        # TOTAL SCORE
+        # ==========================
+
+        total_score = (
+            vram +
+            cuda +
+            tensor +
+            fp16 +
+            int8 +
+            price +
+            hardware_type +
+            manufacturer +
+            model_name +
+            cameras +
+            availability
+        )
 
 
-    df["Priority_Score"] = scores
+        # ==========================
+        # STORE RESULT ROW
+        # ==========================
+
+        results.append({
+
+            "Hardware_Type": row["Hardware_Type"],
+            "Manufacturer": row["Manufacturer"],
+            "Model_Name": row["Model_Name"],
+
+            "VRAM_GB": vram,
+            "CUDA_Cores": cuda,
+            "Tensor_Cores": tensor,
+            "FP16_TFLOPS": fp16,
+            "INT8_TOPS": int8,
+            "Price": price,
+
+            "Recommended_Cameras": row["Recommended_Cameras"],
+            "Availability": row["Availability"],
+
+            "Total_Score": total_score
+
+        })
 
 
-    # sort descending
-    df = df.sort_values("Priority_Score", ascending=False)
+    result_df = pd.DataFrame(results)
 
-
-    return df.head(10)
+    return result_df.sort_values("Total_Score", ascending=False).head(10)
 
 
 # ==========================
-# OPTIONAL: DEFAULT WEIGHT TEMPLATE
+# DEFAULT WEIGHTS EXPORT
 # ==========================
 
 def get_default_weights():
