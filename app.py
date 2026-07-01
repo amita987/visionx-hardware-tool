@@ -5,18 +5,15 @@
 import streamlit as st
 import pandas as pd
 
+
 from customer_input import get_customer_inputs
 
+
 from output import generate_output
+
 
 from recommendation_logic import show_recommendation_logic
 
-
-from recommendation_engine import (
-    recommend_hardware
-)
-
-from output import generate_output
 
 from color_config import (
     PRIMARY_COLOR,
@@ -117,17 +114,18 @@ unsafe_allow_html=True
 # CREATE TABS
 # ==========================
 
-customer_tab, database_tab, logic_tab, output_tab = st.tabs(
+
+customer_tab, output_tab, database_tab, logic_tab = st.tabs(
 
 [
 
 "Customer Recommendation",
 
+"Recommendation Output",
+
 "Hardware Database Management",
 
-"Recommendation Logic",
-
-"Recommendation Output"
+"Recommendation Logic"
 
 ]
 
@@ -162,216 +160,245 @@ with customer_tab:
 
 
 
+        st.success(
 
-        st.session_state.customer_output = generate_output(
-        
-            customer_data
-        
+            "Recommendation Generated Successfully"
+
         )
 
-          
 
-        # ==========================
-        # DISPLAY CALCULATION OUTPUT
-        # ==========================
-        
-        
+
+
+
+# =================================================
+# RECOMMENDATION OUTPUT TAB
+# =================================================
+
+
+with output_tab:
+
+
+    st.header(
+
+        "Hardware Recommendation Output"
+
+    )
+
+
+
+    if "customer_output" in st.session_state:
+
+
+
         customer_output = st.session_state.customer_output
-        
-        
-        
+
+
+
         st.markdown(
-        
+
         """
-        
+
         <div class="result-card">
-        
+
         <h3>
         System Requirement Analysis
         </h3>
-        
+
         </div>
-        
+
         """,
-        
+
         unsafe_allow_html=True
-        
+
         )
-        
-        
-       
-        
-#============================================================     
+
+
+
         output_table = {
-        
-        
+
+
         "Parameter":
-        
+
         [
-        
-        
+
+
         "Resolution Factor (Multiplier)",
-        
-        
+
+
         "AI Model Factor (Multiplier)",
-        
-        
+
+
         "Model Memory (GB)",
-        
-        
+
+
         "Camera Memory (GB)",
-        
-        
+
+
         "Safety Margin (GB)",
-        
-        
+
+
         "Workload Score (Score)",
-        
-        
+
+
         "VRAM Required (GB)",
-        
-        
+
+
         "CUDA Required (Cores)",
-        
-        
+
+
         "Tensor Required (Cores)",
-        
-        
+
+
         "FP16 Required (TFLOPS)",
-        
-        
+
+
         "INT8 Required (TOPS)",
-        
-        
+
+
         "Model Factor - FP16 (Multiplier)",
-        
-        
+
+
         "Processing Factor - CUDA (Multiplier)",
-        
-        
+
+
         "AI Model Complexity Factor - Tensor (Cores)",
-        
-        
+
+
         "Optimization Factor - INT8 (Multiplier)"
-        
-        
+
+
         ],
-        
-        
-        
+
+
+
         "Value":
-        
+
         [
-        
-        
+
+
         customer_output["Resolution Factor"],
-        
-        
+
+
         customer_output["Model Factor (FP16)"],
-        
-        
+
+
         customer_output["Model Memory (GB)"],
-        
-        
+
+
         customer_output["Camera Memory (GB)"],
-        
-        
+
+
         customer_output["Safety Margin (GB)"],
-        
-        
+
+
         customer_output["Workload Score"],
-        
-        
+
+
         customer_output["VRAM Required (GB)"],
-        
-        
+
+
         customer_output["CUDA Required"],
-        
-        
+
+
         customer_output["Tensor Required"],
-        
-        
+
+
         customer_output["FP16 Required"],
-        
-        
+
+
         customer_output["INT8 Required"],
-        
-        
+
+
         customer_output["Model Factor (FP16)"],
-        
-        
+
+
         customer_output["Processing Factor (CUDA)"],
-        
-        
+
+
         customer_output["AI Model Complexity Factor (Tensor)"],
-        
-        
+
+
         customer_output["Optimization Factor (INT8)"]
-        
-        
+
+
         ],
-        
-        
-        
+
+
+
         "Type":
-        
+
         [
-        
-        
+
+
         "Assumed / Lookup value",
-        
-        
+
+
         "Assumed / Lookup value",
-        
-        
+
+
         "Assumed value",
-        
-        
+
+
         "Calculated",
-        
-        
+
+
         "Assumed value",
-        
-        
+
+
         "Calculated",
-        
-        
+
+
         "Calculated",
-        
-        
+
+
         "Calculated",
-        
-        
+
+
         "Assumed / Lookup value",
-        
-        
+
+
         "Calculated",
-        
-        
+
+
         "Calculated",
-        
-        
+
+
         "Assumed / Lookup value",
-        
-        
+
+
         "Assumed value",
-        
-        
+
+
         "Assumed / Lookup value",
-        
-        
+
+
         "Assumed / Lookup value"
-        
-        
+
+
         ]
-        
+
+
         }
-#============================================================
+
+
+
         st.table(
-        
+
             output_table
-        
+
         )
+
+
+
+    else:
+
+
+        st.info(
+
+            "Generate recommendation first from Customer Recommendation tab"
+
+        )
+
 
 
 
@@ -402,70 +429,3 @@ with logic_tab:
 
 
     show_recommendation_logic()
-
-
-
-
-
-# =================================================
-# OUTPUT TAB
-# =================================================
-
-
-with output_tab:
-
-
-    st.header(
-
-        "Hardware Recommendation Output"
-
-    )
-
-
-
-    if "customer_output" in st.session_state:
-
-
-        result = st.session_state.customer_output
-
-
-
-        output_table = pd.DataFrame(
-
-            {
-
-                "Parameter":
-
-                result.keys(),
-
-
-                "Value":
-
-                result.values()
-
-            }
-
-        )
-
-
-
-        st.dataframe(
-
-            output_table,
-
-            use_container_width=True,
-
-            hide_index=True
-
-        )
-
-
-
-    else:
-
-
-        st.info(
-
-            "In customer recommendation (tab) hit Generate recommendation (button) first after giving proper inputs"
-
-        )
