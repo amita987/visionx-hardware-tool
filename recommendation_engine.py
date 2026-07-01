@@ -21,11 +21,59 @@ DATABASE_FILE = "hardware_database.csv"
 def load_hardware_database():
 
 
-    return pd.read_csv(
+    df = pd.read_csv(
 
         DATABASE_FILE
 
     )
+
+
+    numeric_columns = [
+
+
+        "VRAM_GB",
+
+        "CUDA_Cores",
+
+        "Tensor_Cores",
+
+        "FP16_TFLOPS",
+
+        "INT8_TOPS",
+
+        "Power_W",
+
+        "Workload_Min",
+
+        "Workload_Max",
+
+        "Recommended_Cameras",
+
+        "Max_FPS",
+
+        "Price"
+
+    ]
+
+
+
+    for col in numeric_columns:
+
+
+        if col in df.columns:
+
+
+            df[col] = pd.to_numeric(
+
+                df[col],
+
+                errors="coerce"
+
+            )
+
+
+
+    return df
 
 
 
