@@ -7,6 +7,8 @@ import pandas as pd
 
 from customer_input import get_customer_inputs
 
+from output import generate_output
+
 from recommendation_engine import (
     calculate_workload,
     recommend_hardware
@@ -111,16 +113,13 @@ unsafe_allow_html=True
 # CREATE TABS
 # ==========================
 
-customer_tab, database_tab, logic_tab = st.tabs(
+customer_tab, database_tab, logic_tab, output_tab = st.tabs(
 
 [
-
 "Customer Recommendation",
-
 "Hardware Database Management",
-
-"Recommendation Logic"
-
+"Recommendation Logic",
+"Recommendation Output"
 ]
 
 )
@@ -141,6 +140,15 @@ with customer_tab:
     
     
     customer_data = get_customer_inputs()
+
+    if st.button("Generate Recommendation"):
+
+
+    st.session_state.customer_output = generate_output(
+
+        customer_data
+
+    )
 
 
 
@@ -591,6 +599,76 @@ with logic_tab:
         hide_index=True
 
     )
+
+    # =================================================
+    # OUTPUT TAB
+    # =================================================
+    
+    
+    with output_tab:
+    
+    
+        st.header(
+    
+            "Hardware Recommendation Output"
+    
+        )
+    
+    
+        if "customer_output" in st.session_state:
+    
+    
+            result = st.session_state.customer_output
+    
+    
+    
+            st.success(
+    
+                "Recommendation Generated"
+    
+            )
+    
+    
+    
+            output_table = pd.DataFrame(
+    
+                {
+    
+                    "Parameter":
+    
+                    result.keys(),
+    
+    
+                    "Value":
+    
+                    result.values()
+    
+                }
+    
+            )
+    
+    
+            st.dataframe(
+    
+                output_table,
+    
+                use_container_width=True,
+    
+                hide_index=True
+    
+            )
+    
+    
+        else:
+    
+    
+            st.info(
+    
+                "Please generate recommendation from Customer Recommendation tab"
+    
+            )
+
+    
     # =================================================
     # CUSTOMER INPUT REFERENCE TABLE
     # =================================================
