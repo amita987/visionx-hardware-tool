@@ -145,28 +145,80 @@ with customer_tab:
 
 
 
+
     if st.button(
-
+    
         "Generate Recommendation"
-
+    
     ):
-
-
+    
+    
         st.session_state.customer_output = generate_output(
-
+    
             customer_data
-
+    
         )
-
-
-
+    
+    
         st.success(
-
+    
             "Recommendation Generated Successfully"
-
+    
         )
-
-
+    
+    
+        # ==========================
+        # SHOW RESULT IMMEDIATELY
+        # ==========================
+    
+    
+        customer_output = st.session_state.customer_output
+    
+    
+    
+        st.markdown(
+    
+        """
+    
+        <div class="result-card">
+    
+        <h3>
+        System Requirement Analysis
+        </h3>
+    
+        </div>
+    
+        """,
+    
+        unsafe_allow_html=True
+    
+        )
+    
+    
+    
+        output_table = {
+    
+    
+        "Parameter":
+    
+        list(customer_output.keys()),
+    
+    
+        "Value":
+    
+        list(customer_output.values())
+    
+    
+    
+        }
+    
+    
+    
+        st.table(
+    
+            output_table
+    
+        )
 
 
 
