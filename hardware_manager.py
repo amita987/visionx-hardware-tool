@@ -11,9 +11,16 @@ import pandas as pd
 # DATABASE FILE
 # ==========================
 
-DATABASE_FILE = "hardware_database.csv"
+import os
 
 
+DATABASE_FILE = os.path.join(
+
+    os.getcwd(),
+
+    "hardware_database.csv"
+
+)
 
 # ==========================
 # LOAD DATABASE
