@@ -1,109 +1,77 @@
 import pandas as pd
 
 
-# ==========================
-# PRIORITY SCORING ENGINE
-# ==========================
+# =================================================
+# DEFAULT WEIGHTS
+# =================================================
 
-def compute_priority_score(row, requirements, weights):
+DEFAULT_WEIGHTS = {
+
+    "vram": 10,
+    "cuda": 9,
+    "tensor": 9,
+    "fp16": 8,
+    "int8": 7,
+    "price": 5
+
+}
+
+
+# =================================================
+# SCORING ENGINE
+# =================================================
+
+def compute_score(row, req, weights):
 
 
     score = 0
 
 
-    # ==========================
-    # VRAM SCORE
-    # ==========================
-
-    if row["VRAM_GB"] >= requirements["vram_required"]:
-
-        score += weights["vram"] * 1
-
-    else:
-
-        score += weights["vram"] * (row["VRAM_GB"] / requirements["vram_required"])
+    # VRAM
+    score += weights["vram"] * min(row["VRAM_GB"] / req["VRAM Required (GB)"], 1)
 
 
-
-    # ==========================
-    # CUDA SCORE
-    # ==========================
-
-    if row["CUDA_Cores"] >= requirements["cuda_required"]:
-
-        score += weights["cuda"] * 1
-
-    else:
-
-        score += weights["cuda"] * (row["CUDA_Cores"] / requirements["cuda_required"])
+    # CUDA
+    score += weights["cuda"] * min(row["CUDA_Cores"] / req["CUDA Required"], 1)
 
 
-
-    # ==========================
-    # TENSOR SCORE
-    # ==========================
-
-    if row["Tensor_Cores"] >= requirements["tensor_required"]:
-
-        score += weights["tensor"] * 1
-
-    else:
-
-        score += weights["tensor"] * 0.5
+    # TENSOR
+    score += weights["tensor"] * min(row["Tensor_Cores"] / req["Tensor Required"], 1)
 
 
-
-    # ==========================
-    # FP16 SCORE
-    # ==========================
-
-    if row["FP16_TFLOPS"] >= requirements["fp16_required"]:
-
-        score += weights["fp16"] * 1
-
-    else:
-
-        score += weights["fp16"] * (row["FP16_TFLOPS"] / requirements["fp16_required"])
+    # FP16
+    score += weights["fp16"] * min(row["FP16_TFLOPS"] / req["FP16 Required"], 1)
 
 
-
-    # ==========================
-    # INT8 SCORE
-    # ==========================
-
-    if row["INT8_TOPS"] >= requirements["int8_required"]:
-
-        score += weights["int8"] * 1
-
-    else:
-
-        score += weights["int8"] * (row["INT8_TOPS"] / requirements["int8_required"])
+    # INT8
+    score += weights["int8"] * min(row["INT8_TOPS"] / req["INT8 Required"], 1)
 
 
-
-    # ==========================
-    # PRICE PENALTY (LOWER IS BETTER)
-    # ==========================
-
+    # PRICE (lower better)
     score += weights["price"] * (1 / row["Price"])
-
 
 
     return score
 
 
 
-# ==========================
-# MAIN FUNCTION
-# ==========================
+# =================================================
+# MAIN FUNCTION (USED BY APP.PY)
+# =================================================
 
-def get_priority_recommendation(hardware_df, requirements, weights):
-
-
-    hardware_df["Priority_Score"] = hardware_df.apply(
+def get_priority_recommendation(customer_output, csv_path="hardware_database.csv"):
 
 
-        lambda row: compute_priority_score(row, requirements, weights),
+    df = pd.read_csv(csv_path)
+
+
+    weights = DEFAULT_WEIGHTS
+
+
+    df["Priority_Score"] = df.apply(
+
+
+        lambda row: compute_score(row, customer_output, weights),
 
 
         axis=1
@@ -113,17 +81,8 @@ def get_priority_recommendation(hardware_df, requirements, weights):
 
 
 
-    sorted_df = hardware_df.sort_values(
-
-
-        by="Priority_Score",
-
-
-        ascending=False
-
-
-    )
+    df = df.sort_values("Priority_Score", ascending=False)
 
 
 
-    return sorted_df.head(10)
+    return df.head(10)
