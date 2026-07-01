@@ -548,28 +548,57 @@ with priority_tab:
 
     if "customer_output" in st.session_state:
 
-        weights = {
-
-            "VRAM_GB_weight": 1,
-            "CUDA_Cores_weight": 1,
-            "Tensor_Cores_weight": 1,
-            "FP16_TFLOPS_weight": 1,
-            "INT8_TOPS_weight": 1,
-            "Price_weight": 1
-
-        }
-
-        result_df = get_priority_recommendation(
-            st.session_state.customer_output,
-            weights=weights
-        )
-
-        st.subheader("Top 10 Ranked Hardware")
-
-        st.dataframe(
-            result_df,
-            use_container_width=True
-        )
+        
+        st.subheader("Set Priority Weights (1 to 10)")
+        
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            vram_w = st.number_input("VRAM Weight", 1.0, 10.0, 1.0)
+        
+        with col2:
+            cuda_w = st.number_input("CUDA Weight", 1.0, 10.0, 1.0)
+        
+        with col3:
+            tensor_w = st.number_input("Tensor Weight", 1.0, 10.0, 1.0)
+        
+        col4, col5, col6 = st.columns(3)
+        
+        with col4:
+            fp16_w = st.number_input("FP16 Weight", 1.0, 10.0, 1.0)
+        
+        with col5:
+            int8_w = st.number_input("INT8 Weight", 1.0, 10.0, 1.0)
+        
+        with col6:
+            price_w = st.number_input("Price Weight", 1.0, 10.0, 1.0)
+        
+        run_priority = st.button("Generate Priority Ranking")
+        
+        if run_priority:
+        
+            weights = {
+        
+                "VRAM_GB_weight": vram_w,
+                "CUDA_Cores_weight": cuda_w,
+                "Tensor_Cores_weight": tensor_w,
+                "FP16_TFLOPS_weight": fp16_w,
+                "INT8_TOPS_weight": int8_w,
+                "Price_weight": price_w
+        
+            }
+        
+            result_df = get_priority_recommendation(
+                st.session_state.customer_output,
+                weights=weights
+            )
+        
+            st.subheader("Top 10 Ranked Hardware")
+        
+            st.dataframe(
+                result_df,
+                use_container_width=True
+            )
 
     else:
 
