@@ -7,120 +7,251 @@ import pandas as pd
 
 
 # ==========================
+# DATABASE FILE
+# ==========================
+
+DATABASE_FILE = "hardware_database.csv"
+
+
+
+# ==========================
 # LOAD HARDWARE DATABASE
 # ==========================
 
 def load_hardware_database():
 
-    hardware = pd.read_csv(
-        "hardware_database.csv"
-    )
 
-    return hardware
+    return pd.read_csv(
 
+        DATABASE_FILE
 
-
-# ==========================
-# RESOLUTION FACTOR
-# ==========================
-
-def resolution_factor(resolution):
-
-    factors = {
-
-        "1080p": 1,
-        "2K": 2,
-        "4K": 3,
-        "8K": 5
-
-    }
-
-
-    return factors.get(
-        resolution,
-        1
     )
 
 
 
+
+
 # ==========================
-# AI MODEL FACTOR
+# HARDWARE TYPE LOGIC
 # ==========================
 
-def model_factor(model):
 
-    factors = {
-
-        "YOLOv8": 2,
-        "YOLOv10": 3,
-        "Detectron2": 4
-
-    }
+def check_hardware_type(df):
 
 
-    return factors.get(
-        model,
-        1
-    )
+    return df[
+
+        df["Hardware_Type"] == "GPU"
+
+    ]
+
+
 
 
 
 # ==========================
-# WORKLOAD CALCULATION
+# MANUFACTURER FILTER
 # ==========================
 
-def calculate_workload(
-    cameras,
-    fps,
-    resolution,
-    model
+
+def filter_manufacturer(df, vendor=None):
+
+
+    if vendor is None:
+
+
+        return df
+
+
+
+    return df[
+
+        df["Manufacturer"] == vendor
+
+    ]
+
+
+
+
+
+# ==========================
+# MAIN RECOMMENDATION ENGINE
+# ==========================
+
+
+def recommend_hardware(
+
+        calculation_output,
+
+        vendor=None
+
 ):
 
 
-    workload = (
 
-        cameras
-        *
-        fps
-        *
-        resolution_factor(resolution)
-        *
-        model_factor(model)
+    df = load_hardware_database()
+
+
+
+    # ==========================
+    # 1. HARDWARE TYPE
+    # ==========================
+
+
+    df = check_hardware_type(df)
+
+
+
+
+    # ==========================
+    # 2. MANUFACTURER
+    # ==========================
+
+
+    df = filter_manufacturer(
+
+        df,
+
+        vendor
 
     )
 
 
-    return workload
+
+
+    # ==========================
+    # 3. VRAM CHECK
+    # ==========================
+
+
+    df = df[
+
+        df["VRAM_GB"]
+
+        >=
+
+        calculation_output["VRAM Required (GB)"]
+
+    ]
 
 
 
-# ==========================
-# HARDWARE RECOMMENDATION
-# ==========================
 
-def recommend_hardware(workload):
-
-
-    hardware = load_hardware_database()
+    # ==========================
+    # 4. CUDA CHECK
+    # ==========================
 
 
+    df = df[
 
-    for index,row in hardware.iterrows():
+        df["CUDA_Cores"]
 
+        >=
 
-        if (
+        calculation_output["CUDA Required"]
 
-            workload >= row["Workload_Min"]
-
-            and
-
-            workload <= row["Workload_Max"]
-
-        ):
-
-
-            return row
+    ]
 
 
 
-    return None
+
+    # ==========================
+    # 5. TENSOR CHECK
+    # ==========================
+
+
+    df = df[
+
+        df["Tensor_Cores"]
+
+        >=
+
+        calculation_output["Tensor Required"]
+
+    ]
+
+
+
+
+    # ==========================
+    # 6. FP16 CHECK
+    # ==========================
+
+
+    df = df[
+
+        df["FP16_TFLOPS"]
+
+        >=
+
+        calculation_output["FP16 Required"]
+
+    ]
+
+
+
+
+    # ==========================
+    # 7. INT8 CHECK
+    # ==========================
+
+
+    df = df[
+
+        df["INT8_TOPS"]
+
+        >=
+
+        calculation_output["INT8 Required"]
+
+    ]
+
+
+
+
+    # ==========================
+    # 8. WORKLOAD RANGE CHECK
+    # ==========================
+
+
+    df = df[
+
+        (df["Workload_Min"]
+
+        <=
+
+        calculation_output["Workload Score"])
+
+        &
+
+        (df["Workload_Max"]
+
+        >=
+
+        calculation_output["Workload Score"])
+
+    ]
+
+
+
+
+    # ==========================
+    # FINAL RESULT
+    # ==========================
+
+
+    if len(df) == 0:
+
+
+        return None
+
+
+
+    # Pick first suitable hardware
+
+
+    recommendation = df.iloc[0]
+
+
+
+    return recommendation
