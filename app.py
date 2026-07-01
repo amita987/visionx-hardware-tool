@@ -383,56 +383,57 @@ with output_tab:
 
 
 
+
         "Value":
 
         [
-
-
-        customer_output["Resolution Factor"],
-
-
-        customer_output["AI Model Factor"],
-
-
-        customer_output["Model Memory (GB)"],
-
-
-        customer_output["Camera Memory (GB)"],
-
-
-        customer_output["Safety Margin (GB)"],
-
-
-        customer_output["Workload Score"],
-
-
-        customer_output["VRAM Required (GB)"],
-
-
-        customer_output["CUDA Required"],
-
-
-        customer_output["Tensor Required"],
-
-
-        customer_output["FP16 Required"],
-
-
-        customer_output["INT8 Required"],
-
-
-        customer_output["AI Model Factor"],
-
-
-        customer_output["Processing Factor (CUDA)"],
-
-
-        customer_output["AI Model Complexity Factor (Tensor)"],
-
-
-        customer_output["Optimization Factor (INT8)"]
-
-
+        
+        
+        round(customer_output["Resolution Factor"],2),
+        
+        
+        round(customer_output["AI Model Factor"],2),
+        
+        
+        round(customer_output["Model Memory (GB)"],2),
+        
+        
+        round(customer_output["Camera Memory (GB)"],2),
+        
+        
+        round(customer_output["Safety Margin (GB)"],2),
+        
+        
+        round(customer_output["Workload Score"],2),
+        
+        
+        round(customer_output["VRAM Required (GB)"],2),
+        
+        
+        round(customer_output["CUDA Required"],0),
+        
+        
+        round(customer_output["Tensor Required"],0),
+        
+        
+        round(customer_output["FP16 Required"],2),
+        
+        
+        round(customer_output["INT8 Required"],2),
+        
+        
+        round(customer_output["AI Model Factor"],2),
+        
+        
+        round(customer_output["Processing Factor (CUDA)"],2),
+        
+        
+        round(customer_output["AI Model Complexity Factor (Tensor)"],0),
+        
+        
+        round(customer_output["Optimization Factor (INT8)"],2)
+        
+        
         ],
 
 
