@@ -16,6 +16,7 @@ from recommendation_engine import (
     recommend_hardware
 )
 
+from recommendation_logic import show_recommendation_logic
 
 from color_config import (
     PRIMARY_COLOR,
