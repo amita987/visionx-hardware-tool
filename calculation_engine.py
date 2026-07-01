@@ -3,16 +3,15 @@
 # ==========================
 
 
+
 # ==========================
 # RESOLUTION FACTOR
 # ==========================
-
 
 def get_resolution_factor(resolution):
 
 
     factors = {
-
 
         "1080p": 1,
 
@@ -25,13 +24,8 @@ def get_resolution_factor(resolution):
     }
 
 
-    return factors.get(
+    return factors.get(resolution,1)
 
-        resolution,
-
-        1
-
-    )
 
 
 
@@ -39,39 +33,32 @@ def get_resolution_factor(resolution):
 # AI MODEL FACTOR
 # ==========================
 
-
 def get_ai_model_factor(model):
 
 
     factors = {
 
 
-        "YOLOv8": 1,
+        "YOLOv8":1,
 
 
-        "YOLOv10": 1.3,
+        "YOLOv10":1.3,
 
 
-        "Detectron": 1.5
+        "Detectron":1.5
 
 
     }
 
 
-    return factors.get(
+    return factors.get(model,1)
 
-        model,
-
-        1
-
-    )
 
 
 
 # ==========================
-# MAIN CALCULATION FUNCTION
+# MAIN CALCULATION
 # ==========================
-
 
 def calculate_requirements(customer_data):
 
@@ -93,7 +80,7 @@ def calculate_requirements(customer_data):
 
 
     # ==========================
-    # WORKLOAD SCORE
+    # FACTORS
     # ==========================
 
 
@@ -110,6 +97,20 @@ def calculate_requirements(customer_data):
 
     )
 
+
+
+    processing_factor = 2
+
+
+
+    optimization_factor = model_factor
+
+
+
+
+    # ==========================
+    # WORKLOAD SCORE
+    # ==========================
 
 
     workload_score = (
@@ -132,12 +133,11 @@ def calculate_requirements(customer_data):
 
 
 
+
     # ==========================
-    # VRAM REQUIRED
+    # VRAM
     # ==========================
 
-
-    # Model memory
 
     if ai_model == "YOLOv8":
 
@@ -155,13 +155,8 @@ def calculate_requirements(customer_data):
 
 
 
-    # Camera buffer
-
     camera_memory = cameras * 0.2
 
-
-
-    # Safety margin
 
     safety_margin = 1
 
@@ -183,48 +178,63 @@ def calculate_requirements(customer_data):
 
 
 
-    # ==========================
-    # CUDA REQUIREMENT
-    # ==========================
-
-
-    cuda_required = workload_score * 2
-
-
 
     # ==========================
-    # TENSOR REQUIREMENT
+    # CUDA
+    # ==========================
+
+
+    cuda_required = (
+
+        workload_score
+
+        *
+
+        processing_factor
+
+    )
+
+
+
+
+    # ==========================
+    # TENSOR
     # ==========================
 
 
     if ai_model == "YOLOv10":
 
-        tensor_required = 100
+        ai_model_complexity_factor = 100
 
 
     elif ai_model == "YOLOv8":
 
-        tensor_required = 50
+        ai_model_complexity_factor = 50
 
 
     else:
 
-        tensor_required = 120
+        ai_model_complexity_factor = 120
+
+
+
+    tensor_required = ai_model_complexity_factor
+
 
 
 
     # ==========================
-    # FP16 REQUIREMENT
+    # FP16
     # ==========================
 
 
     fp16_required = (
 
-        cameras
+        fps
 
         *
 
-        fps
+        cameras
 
         *
 
@@ -238,8 +248,9 @@ def calculate_requirements(customer_data):
 
 
 
+
     # ==========================
-    # INT8 REQUIREMENT
+    # INT8
     # ==========================
 
 
@@ -249,9 +260,10 @@ def calculate_requirements(customer_data):
 
         *
 
-        model_factor
+        optimization_factor
 
     )
+
 
 
 
@@ -271,68 +283,61 @@ def calculate_requirements(customer_data):
 
 
 
+    # ==========================
+    # RETURN ALL VALUES
+    # ==========================
 
 
-        
-       return {
+    return {
 
 
-        # ==========================
-        # FINAL REQUIREMENTS
-        # ==========================
-    
-    
         "workload_score": workload_score,
-    
-    
+
+
         "vram_required": round(vram_required,2),
-    
-    
+
+
         "cuda_required": round(cuda_required,0),
-    
-    
+
+
         "tensor_required": tensor_required,
-    
-    
+
+
         "fp16_required": round(fp16_required,2),
-    
-    
+
+
         "int8_required": round(int8_required,2),
-    
-    
-    
-        # ==========================
-        # INTERMEDIATE VARIABLES
-        # ==========================
-    
-    
+
+
+
+        # intermediate values
+
+
         "resolution_factor": resolution_factor,
-    
-    
+
+
         "model_factor": model_factor,
-    
-    
-        "processing_factor": 2,
-    
-    
-        "ai_model_complexity_factor": tensor_required,
-    
-    
-        "optimization_factor": model_factor,
-    
-    
-    
-        # ==========================
-        # VRAM BREAKDOWN
-        # ==========================
-    
-    
+
+
+        "processing_factor": processing_factor,
+
+
+        "ai_model_complexity_factor": ai_model_complexity_factor,
+
+
+        "optimization_factor": optimization_factor,
+
+
+
+        # VRAM breakdown
+
+
         "model_memory": model_memory,
-    
-    
+
+
         "camera_memory": camera_memory,
-    
-    
+
+
         "safety_margin": safety_margin
-    
+
     }
