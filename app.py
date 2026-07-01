@@ -169,97 +169,126 @@ with customer_tab:
         
         )
 
-
-
-
-
-
-        if gpu is None:
-
-
-            st.error(
-
-                "No suitable hardware found"
-
-            )
-
-
-        else:
-
-
-            st.markdown(
-
-            """
-
-            <div class="result-card">
-
-            <h3>
-            Recommended Hardware
-            </h3>
-
-            </div>
-
-            """,
-
-            unsafe_allow_html=True
-
-            )
-
-
-
-            output_table = {
-
-
-            "Component":
-
-            [
-
-            "Workload Score",
-
-            "Hardware Type",
-
-            "Manufacturer",
-
-            "Model Name",
-
-            "VRAM",
-
-            "Power"
-
-            ],
-
-
-
-            "Value":
-
-            [
-
-            workload,
-
-            gpu["Hardware_Type"],
-
-            gpu["Manufacturer"],
-
-            gpu["Model_Name"],
-
-            gpu["VRAM_GB"],
-
-            gpu["Power_W"]
-
-            ]
-
-            }
-
-
-
-            st.table(
-
-                output_table
-
-            )
-
-
-
+          
+#============================================================
+        # ==========================
+        # DISPLAY CALCULATION OUTPUT
+        # ==========================
+        
+        
+        customer_output = st.session_state.customer_output
+        
+        
+        
+        st.markdown(
+        
+        """
+        
+        <div class="result-card">
+        
+        <h3>
+        System Requirement Analysis
+        </h3>
+        
+        </div>
+        
+        """,
+        
+        unsafe_allow_html=True
+        
+        )
+        
+        
+        
+        output_table = {
+        
+        
+        "Parameter":
+        
+        [
+        
+        
+        "Workload Score",
+        
+        
+        "VRAM Required",
+        
+        
+        "CUDA Required",
+        
+        
+        "Tensor Required",
+        
+        
+        "FP16 Required",
+        
+        
+        "INT8 Required",
+        
+        
+        "Processing Factor",
+        
+        
+        "AI Model Complexity Factor",
+        
+        
+        "Model Factor",
+        
+        
+        "Optimization Factor"
+        
+        
+        ],
+        
+        
+        
+        "Value":
+        
+        [
+        
+        
+        customer_output["Workload Score"],
+        
+        
+        customer_output["VRAM Required (GB)"],
+        
+        
+        customer_output["CUDA Required"],
+        
+        
+        customer_output["Tensor Required"],
+        
+        
+        customer_output["FP16 Required"],
+        
+        
+        customer_output["INT8 Required"],
+        
+        
+        customer_output["Processing Factor (CUDA)"],
+        
+        
+        customer_output["AI Model Complexity Factor (Tensor)"],
+        
+        
+        customer_output["Model Factor (FP16)"],
+        
+        
+        customer_output["Optimization Factor (INT8)"]
+        
+        
+        ]
+        
+        }
+        
+        
+        
+        st.table(
+        
+            output_table
+        
+        )
+#============================================================
 
 
 # =================================================
