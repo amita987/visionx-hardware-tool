@@ -360,6 +360,6 @@ with output_tab:
 
         st.info(
 
-            "Generate recommendation first"
+            "In customer recommendation tab hit Generate recommendation button first after giving properinput"
 
         )
