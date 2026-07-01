@@ -479,7 +479,7 @@ with output_tab:
         customer_output["INT8 Required"],
 
 
-        customer_output["Model Factor (FP16)"],
+        customer_output["AI Model Factor"],
 
 
         customer_output["Processing Factor (CUDA)"],
