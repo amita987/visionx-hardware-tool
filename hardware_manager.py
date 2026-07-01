@@ -5,7 +5,8 @@
 import streamlit as st
 import pandas as pd
 
-
+import requests
+import base64
 
 # ==========================
 # DATABASE FILE
@@ -35,20 +36,104 @@ def load_database():
 
 
 # ==========================
-# SAVE DATABASE
+# SAVE DATABASE TO GITHUB
 # ==========================
 
 def save_database(df):
 
-    df.to_csv(
 
-        DATABASE_FILE,
+    csv_data = df.to_csv(
 
         index=False
 
     )
 
 
+    content = base64.b64encode(
+
+        csv_data.encode()
+
+    ).decode()
+
+
+
+    url = (
+
+        "https://api.github.com/repos/"
+
+        + st.secrets["GITHUB_REPO"]
+
+        + "/contents/"
+
+        + st.secrets["GITHUB_FILE"]
+
+    )
+
+
+
+    headers = {
+
+
+        "Authorization":
+
+        "token " + st.secrets["GITHUB_TOKEN"]
+
+
+    }
+
+
+
+    # Get existing file information
+
+    response = requests.get(
+
+        url,
+
+        headers=headers
+
+    )
+
+
+    file_info = response.json()
+
+
+
+    sha = file_info["sha"]
+
+
+
+    # Update file in GitHub
+
+    payload = {
+
+
+        "message":
+
+        "Update hardware database",
+
+
+        "content":
+
+        content,
+
+
+        "sha":
+
+        sha
+
+    }
+
+
+
+    requests.put(
+
+        url,
+
+        headers=headers,
+
+        json=payload
+
+    )
 
 # ==========================
 # HARDWARE MANAGEMENT PAGE
