@@ -271,50 +271,13 @@ def calculate_requirements(customer_data):
 
 
 
+
     return {
-    
-    
+
         # ==========================
-        # INTERMEDIATE VARIABLES
+        # Final calculations
         # ==========================
-    
-    
-        "camera_count": cameras,
-    
-    
-        "fps": fps,
-    
-    
-        "resolution": resolution,
-    
-    
-        "ai_model": ai_model,
-    
-    
-        "latency": latency,
-    
-    
-        "resolution_factor": resolution_factor,
-    
-    
-        "model_factor": model_factor,
-    
-    
-        "model_memory": model_memory,
-    
-    
-        "camera_memory": round(camera_memory,2),
-    
-    
-        "safety_margin": safety_margin,
-    
-    
-    
-        # ==========================
-        # FINAL REQUIREMENTS
-        # ==========================
-    
-    
+        
         "workload_score": workload_score,
     
     
@@ -330,6 +293,25 @@ def calculate_requirements(customer_data):
         "fp16_required": round(fp16_required,2),
     
     
-        "int8_required": round(int8_required,2)
+        "int8_required": round(int8_required,2),
+    
+    
+        # ==========================
+        # Intermediate factors
+        # ==========================
+        
+        "resolution_factor": resolution_factor,
+    
+    
+        "model_factor": model_factor,
+    
+    
+        "processing_factor": 2,
+    
+    
+        "ai_model_complexity_factor": tensor_required,
+    
+    
+        "optimization_factor": model_factor
     
     }
