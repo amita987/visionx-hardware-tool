@@ -169,14 +169,7 @@ with customer_tab:
         # ==========================
 
 
-        hardware_result = recommend_hardware(
 
-            st.session_state.customer_output
-
-        )
-
-
-        st.session_state.hardware_result = hardware_result
         hardware_result = recommend_hardware(
         
             st.session_state.customer_output
