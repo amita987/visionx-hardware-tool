@@ -538,25 +538,39 @@ with logic_tab:
 
 
     show_recommendation_logic()
+# ==========================
+# PRIORITY ANALYSIS TAB
+# ==========================
+
 with priority_tab:
 
-    st.header("Priority Analysis Engine")
-
+    st.header("Priority-Based Hardware Ranking")
 
     if "customer_output" in st.session_state:
 
+        weights = {
 
-        result = get_priority_recommendation(
-            st.session_state.customer_output
+            "VRAM_GB_weight": 1,
+            "CUDA_Cores_weight": 1,
+            "Tensor_Cores_weight": 1,
+            "FP16_TFLOPS_weight": 1,
+            "INT8_TOPS_weight": 1,
+            "Price_weight": 1
+
+        }
+
+        result_df = get_priority_recommendation(
+            st.session_state.customer_output,
+            weights=weights
         )
-
 
         st.subheader("Top 10 Ranked Hardware")
 
-
-        st.dataframe(result, use_container_width=True)
-
+        st.dataframe(
+            result_df,
+            use_container_width=True
+        )
 
     else:
 
-        st.warning("Generate recommendation first from Customer tab")
+        st.info("Run Customer Recommendation first")
