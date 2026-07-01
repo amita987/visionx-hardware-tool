@@ -538,3 +538,25 @@ with logic_tab:
 
 
     show_recommendation_logic()
+with priority_tab:
+
+    st.header("Priority Analysis Engine")
+
+
+    if "customer_output" in st.session_state:
+
+
+        result = get_priority_recommendation(
+            st.session_state.customer_output
+        )
+
+
+        st.subheader("Top 10 Ranked Hardware")
+
+
+        st.dataframe(result, use_container_width=True)
+
+
+    else:
+
+        st.warning("Generate recommendation first from Customer tab")
