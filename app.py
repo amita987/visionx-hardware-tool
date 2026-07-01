@@ -163,7 +163,19 @@ with customer_tab:
         
         )
         
-        
+        # ==========================
+        # HARDWARE RECOMMENDATION
+        # ==========================
+
+
+        hardware_result = recommend_hardware(
+
+            st.session_state.customer_output
+
+        )
+
+
+        st.session_state.hardware_result = hardware_result
         hardware_result = recommend_hardware(
         
             st.session_state.customer_output
@@ -233,7 +245,99 @@ with customer_tab:
     
         )
 
+        # ==========================
+        # SHOW RECOMMENDED HARDWARE
+        # ==========================
 
+
+        if "hardware_result" in st.session_state:
+
+
+            gpu = st.session_state.hardware_result
+
+
+            if gpu is not None:
+
+
+                st.subheader(
+
+                    "Recommended Hardware"
+
+                )
+
+
+                hardware_table = {
+
+
+                "Component":
+
+                [
+
+                "Hardware Type",
+
+                "Manufacturer",
+
+                "Model Name",
+
+                "VRAM",
+
+                "CUDA Cores",
+
+                "Tensor Cores",
+
+                "FP16",
+
+                "INT8",
+
+                "Power"
+
+                ],
+
+
+
+                "Value":
+
+                [
+
+                gpu["Hardware_Type"],
+
+                gpu["Manufacturer"],
+
+                gpu["Model_Name"],
+
+                gpu["VRAM_GB"],
+
+                gpu["CUDA_Cores"],
+
+                gpu["Tensor_Cores"],
+
+                gpu["FP16_TFLOPS"],
+
+                gpu["INT8_TOPS"],
+
+                gpu["Power_W"]
+
+                ]
+
+                }
+
+
+
+                st.table(
+
+                    hardware_table
+
+                )
+
+
+            else:
+
+
+                st.error(
+
+                    "No matching hardware found"
+
+                )
 
 # =================================================
 # RECOMMENDATION OUTPUT TAB
