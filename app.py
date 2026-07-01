@@ -18,6 +18,8 @@ from recommendation_engine import (
 
 from recommendation_logic import show_recommendation_logic
 
+from priority_analysis import get_priority_recommendation
+
 from color_config import (
     PRIMARY_COLOR,
     SECONDARY_COLOR,
@@ -118,7 +120,7 @@ unsafe_allow_html=True
 # ==========================
 
 
-customer_tab, output_tab, database_tab, logic_tab = st.tabs(
+customer_tab, output_tab, database_tab, logic_tab, priority_tab = st.tabs
 
 [
 
@@ -129,6 +131,8 @@ customer_tab, output_tab, database_tab, logic_tab = st.tabs(
 "Hardware Database Management",
 
 "Recommendation Logic"
+
+"Priority Analysis"
 
 ]
 
