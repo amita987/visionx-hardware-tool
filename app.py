@@ -449,7 +449,7 @@ with output_tab:
         customer_output["Resolution Factor"],
 
 
-        customer_output["Model Factor (FP16)"],
+        customer_output["AI Model Factor"],
 
 
         customer_output["Model Memory (GB)"],
