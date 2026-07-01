@@ -272,12 +272,16 @@ def calculate_requirements(customer_data):
 
 
 
-    return {
+
+        
+       return {
+
 
         # ==========================
-        # Final calculations
+        # FINAL REQUIREMENTS
         # ==========================
-        
+    
+    
         "workload_score": workload_score,
     
     
@@ -296,10 +300,12 @@ def calculate_requirements(customer_data):
         "int8_required": round(int8_required,2),
     
     
+    
         # ==========================
-        # Intermediate factors
+        # INTERMEDIATE VARIABLES
         # ==========================
-        
+    
+    
         "resolution_factor": resolution_factor,
     
     
@@ -312,6 +318,21 @@ def calculate_requirements(customer_data):
         "ai_model_complexity_factor": tensor_required,
     
     
-        "optimization_factor": model_factor
+        "optimization_factor": model_factor,
+    
+    
+    
+        # ==========================
+        # VRAM BREAKDOWN
+        # ==========================
+    
+    
+        "model_memory": model_memory,
+    
+    
+        "camera_memory": camera_memory,
+    
+    
+        "safety_margin": safety_margin
     
     }
