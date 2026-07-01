@@ -12,7 +12,9 @@ from customer_input import get_customer_inputs
 from output import generate_output
 
 
-from recommendation_logic import show_recommendation_logic
+from recommendation_engine import (
+    recommend_hardware
+)
 
 
 from color_config import (
@@ -153,13 +155,24 @@ with customer_tab:
     ):
     
     
+
+    
         st.session_state.customer_output = generate_output(
-    
+        
             customer_data
-    
+        
         )
-    
-    
+        
+        
+        hardware_result = recommend_hardware(
+        
+            st.session_state.customer_output
+        
+        )
+        
+        
+        st.session_state.hardware_result = hardware_result
+   
         st.success(
     
             "Recommendation Generated Successfully"
