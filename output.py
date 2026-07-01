@@ -54,6 +54,14 @@ def generate_output(customer_input):
         "FP16 Required": results["fp16_required"],
 
         "INT8 Required": results["int8_required"],
+        
+        "Model Factor (FP16)": results["model_factor"],
+        
+        "Processing Factor (CUDA)": results["processing_factor"],
+            
+        "AI Model Complexity Factor (Tensor)": results["ai_model_complexity_factor"],
+            
+        "Optimization Factor (INT8)": results["optimization_factor"],
 
 
         # ======================
