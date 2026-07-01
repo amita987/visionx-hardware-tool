@@ -11,10 +11,12 @@ from output import generate_output
 
 from recommendation_logic import show_recommendation_logic
 
+
 from recommendation_engine import (
-    calculate_workload,
     recommend_hardware
 )
+
+from output import generate_output
 
 from color_config import (
     PRIMARY_COLOR,
@@ -160,25 +162,15 @@ with customer_tab:
 
 
 
-        workload = calculate_workload(
 
-            customer_data["camera_count"],
-
-            customer_data["fps"],
-
-            customer_data["resolution"],
-
-            customer_data["ai_model"]
-
+        st.session_state.customer_output = generate_output(
+        
+            customer_data
+        
         )
 
 
 
-        gpu = recommend_hardware(
-
-            workload
-
-        )
 
 
 
