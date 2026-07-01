@@ -242,7 +242,7 @@ def calculate_requirements(customer_data):
 
         /
 
-        10
+        100
 
     )
 
