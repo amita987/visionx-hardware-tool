@@ -20,7 +20,24 @@ def generate_output(customer_input):
     # Step 2: Format final output for Streamlit UI
 
     output = {
+        # ======================
+        # INTERMEDIATE VARIABLES
+        # ======================
 
+
+        "Resolution Factor": results["resolution_factor"],
+
+
+        "AI Model Factor": results["model_factor"],
+
+
+        "Model Memory (GB)": results["model_memory"],
+
+
+        "Camera Memory (GB)": results["camera_memory"],
+
+
+        "Safety Margin (GB)": results["safety_margin"],
 
         # ======================
         # CORE METRICS
