@@ -170,7 +170,7 @@ with customer_tab:
         )
 
           
-#============================================================
+
         # ==========================
         # DISPLAY CALCULATION OUTPUT
         # ==========================
@@ -199,7 +199,9 @@ with customer_tab:
         )
         
         
+       
         
+#============================================================     
         output_table = {
         
         
@@ -208,34 +210,49 @@ with customer_tab:
         [
         
         
-        "Workload Score",
+        "Resolution Factor (Multiplier)",
         
         
-        "VRAM Required",
+        "AI Model Factor (Multiplier)",
         
         
-        "CUDA Required",
+        "Model Memory (GB)",
         
         
-        "Tensor Required",
+        "Camera Memory (GB)",
         
         
-        "FP16 Required",
+        "Safety Margin (GB)",
         
         
-        "INT8 Required",
+        "Workload Score (Score)",
         
         
-        "Processing Factor",
+        "VRAM Required (GB)",
         
         
-        "AI Model Complexity Factor",
+        "CUDA Required (Cores)",
         
         
-        "Model Factor",
+        "Tensor Required (Cores)",
         
         
-        "Optimization Factor"
+        "FP16 Required (TFLOPS)",
+        
+        
+        "INT8 Required (TOPS)",
+        
+        
+        "Model Factor - FP16 (Multiplier)",
+        
+        
+        "Processing Factor - CUDA (Multiplier)",
+        
+        
+        "AI Model Complexity Factor - Tensor (Cores)",
+        
+        
+        "Optimization Factor - INT8 (Multiplier)"
         
         
         ],
@@ -245,6 +262,21 @@ with customer_tab:
         "Value":
         
         [
+        
+        
+        customer_output["Resolution Factor"],
+        
+        
+        customer_output["Model Factor (FP16)"],
+        
+        
+        customer_output["Model Memory (GB)"],
+        
+        
+        customer_output["Camera Memory (GB)"],
+        
+        
+        customer_output["Safety Margin (GB)"],
         
         
         customer_output["Workload Score"],
@@ -265,30 +297,83 @@ with customer_tab:
         customer_output["INT8 Required"],
         
         
+        customer_output["Model Factor (FP16)"],
+        
+        
         customer_output["Processing Factor (CUDA)"],
         
         
         customer_output["AI Model Complexity Factor (Tensor)"],
         
         
-        customer_output["Model Factor (FP16)"],
-        
-        
         customer_output["Optimization Factor (INT8)"]
+        
+        
+        ],
+        
+        
+        
+        "Type":
+        
+        [
+        
+        
+        "Assumed / Lookup value",
+        
+        
+        "Assumed / Lookup value",
+        
+        
+        "Assumed value",
+        
+        
+        "Calculated",
+        
+        
+        "Assumed value",
+        
+        
+        "Calculated",
+        
+        
+        "Calculated",
+        
+        
+        "Calculated",
+        
+        
+        "Assumed / Lookup value",
+        
+        
+        "Calculated",
+        
+        
+        "Calculated",
+        
+        
+        "Assumed / Lookup value",
+        
+        
+        "Assumed value",
+        
+        
+        "Assumed / Lookup value",
+        
+        
+        "Assumed / Lookup value"
         
         
         ]
         
         }
-        
-        
-        
+#============================================================
         st.table(
         
             output_table
         
         )
-#============================================================
+
+
 
 
 # =================================================
