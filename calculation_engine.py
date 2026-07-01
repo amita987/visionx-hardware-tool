@@ -272,24 +272,64 @@ def calculate_requirements(customer_data):
 
 
     return {
-
-
+    
+    
+        # ==========================
+        # INTERMEDIATE VARIABLES
+        # ==========================
+    
+    
+        "camera_count": cameras,
+    
+    
+        "fps": fps,
+    
+    
+        "resolution": resolution,
+    
+    
+        "ai_model": ai_model,
+    
+    
+        "latency": latency,
+    
+    
+        "resolution_factor": resolution_factor,
+    
+    
+        "model_factor": model_factor,
+    
+    
+        "model_memory": model_memory,
+    
+    
+        "camera_memory": round(camera_memory,2),
+    
+    
+        "safety_margin": safety_margin,
+    
+    
+    
+        # ==========================
+        # FINAL REQUIREMENTS
+        # ==========================
+    
+    
         "workload_score": workload_score,
-
-
+    
+    
         "vram_required": round(vram_required,2),
-
-
+    
+    
         "cuda_required": round(cuda_required,0),
-
-
+    
+    
         "tensor_required": tensor_required,
-
-
+    
+    
         "fp16_required": round(fp16_required,2),
-
-
+    
+    
         "int8_required": round(int8_required,2)
-
-
+    
     }
