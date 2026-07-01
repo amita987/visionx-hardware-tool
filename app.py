@@ -120,22 +120,14 @@ unsafe_allow_html=True
 # ==========================
 
 
-customer_tab, output_tab, database_tab, logic_tab, priority_tab = st.tabs
-
+customer_tab, output_tab, database_tab, logic_tab, priority_tab = st.tabs(
 [
-
 "Customer Recommendation",
-
 "Recommendation Output",
-
 "Hardware Database Management",
-
-"Recommendation Logic"
-
+"Recommendation Logic",
 "Priority Analysis"
-
 ]
-
 )
 
 
