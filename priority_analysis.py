@@ -121,6 +121,19 @@ def get_priority_recommendation(customer_output, weights=None, csv_path="hardwar
             "Total_Score": total_score
         })
 
+    # ==========================
+    # CREATE FINAL TABLE
+    # ==========================
+    
+    result_df = pd.DataFrame(results)
+    
+    result_df = result_df.sort_values(
+        "Total_Score",
+        ascending=False
+    ).head(10)
+
+return result_df
+
 
 # ==========================
 # DEFAULT WEIGHTS EXPORT
