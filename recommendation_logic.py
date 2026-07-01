@@ -404,3 +404,295 @@ def show_recommendation_logic():
         hide_index=True
 
     )
+
+    # =================================================
+    # HARDWARE DATABASE CSV HEADER REFERENCE
+    # =================================================
+
+
+    st.subheader(
+
+        "Hardware Database CSV Header Reference"
+
+    )
+
+
+
+    csv_header_table = [
+
+
+
+        [
+
+            "Hardware_Type",
+
+            "Hardware Type",
+
+            "Type of component. Example: GPU, CPU, RAM, Storage",
+
+            "No (classification only)"
+
+        ],
+
+
+
+        [
+
+            "Manufacturer",
+
+            "Manufacturer / Brand",
+
+            "Company making hardware. Example: NVIDIA, AMD, Intel",
+
+            "No (filter only)"
+
+        ],
+
+
+
+        [
+
+            "Model_Name",
+
+            "Model Name",
+
+            "Actual hardware model name. Example: RTX 4060",
+
+            "No (final output)"
+
+        ],
+
+
+
+        [
+
+            "VRAM_GB",
+
+            "Video Random Access Memory (Gigabytes)",
+
+            "GPU memory available for AI models, camera frames, and inference data",
+
+            "Yes"
+
+        ],
+
+
+
+        [
+
+            "CUDA_Cores",
+
+            "Compute Unified Device Architecture Cores",
+
+            "Number of NVIDIA GPU processing cores used for parallel computing",
+
+            "Yes"
+
+        ],
+
+
+
+        [
+
+            "Tensor_Cores",
+
+            "Tensor Processing Cores",
+
+            "Specialized NVIDIA cores for AI and deep learning calculations",
+
+            "Yes"
+
+        ],
+
+
+
+        [
+
+            "FP16_TFLOPS",
+
+            "Half Precision Floating Point TFLOPS",
+
+            "AI processing speed using 16-bit floating point numbers",
+
+            "Yes"
+
+        ],
+
+
+
+        [
+
+            "INT8_TOPS",
+
+            "Integer 8-bit TOPS",
+
+            "AI inference speed using 8-bit integer calculations",
+
+            "Yes"
+
+        ],
+
+
+
+        [
+
+            "Power_W",
+
+            "Power Watts",
+
+            "Electrical power consumption of GPU",
+
+            "Sometimes"
+
+        ],
+
+
+
+        [
+
+            "Workload_Min",
+
+            "Minimum Workload Score",
+
+            "Lowest AI workload this GPU can handle",
+
+            "Yes"
+
+        ],
+
+
+
+        [
+
+            "Workload_Max",
+
+            "Maximum Workload Score",
+
+            "Highest AI workload this GPU can handle",
+
+            "Yes"
+
+        ],
+
+
+
+        [
+
+            "Recommended_Cameras",
+
+            "Recommended Number of Cameras",
+
+            "Approximate camera capacity for AI vision workloads",
+
+            "Output reference"
+
+        ],
+
+
+
+        [
+
+            "Max_Resolution",
+
+            "Maximum Resolution",
+
+            "Highest camera/video resolution supported",
+
+            "Yes"
+
+        ],
+
+
+
+        [
+
+            "Max_FPS",
+
+            "Maximum Frames Per Second",
+
+            "Maximum supported video processing speed",
+
+            "Yes"
+
+        ],
+
+
+
+        [
+
+            "AI_Model_Compatibility",
+
+            "Artificial Intelligence Model Compatibility",
+
+            "AI models supported by GPU",
+
+            "Yes"
+
+        ],
+
+
+
+        [
+
+            "Price",
+
+            "Hardware Price",
+
+            "Approximate cost of GPU",
+
+            "Yes (budget filtering)"
+
+        ],
+
+
+
+        [
+
+            "Availability",
+
+            "Stock Availability",
+
+            "Whether hardware is available",
+
+            "Yes (filter)"
+
+        ]
+
+
+
+    ]
+
+
+
+    csv_header_df = pd.DataFrame(
+
+
+        csv_header_table,
+
+
+        columns=[
+
+            "CSV Header",
+
+            "Full Form / Meaning",
+
+            "Explanation",
+
+            "Used in Calculation?"
+
+        ]
+
+
+    )
+
+
+
+    st.dataframe(
+
+        csv_header_df,
+
+        use_container_width=True,
+
+        hide_index=True
+
+    )
